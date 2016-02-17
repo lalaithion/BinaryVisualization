@@ -2,8 +2,11 @@
 
 ## Contributors
 Alex Curtiss - apccurtiss
+
 Audrey Randall - Audrey-Randall
+
 Izaak Weiss - lalaithion
+
 Josh Anderson - janderso1337
 
 ## Description
