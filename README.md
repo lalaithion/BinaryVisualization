@@ -64,7 +64,7 @@ We've seen examples in papers and a TED Talk, but have not been able to find a p
   * 3 hours
 * 6. As a programmer, I'd like to render the image in OpenGL to allow for fast rendering
   * 8 hours
-* 7. As a programmer, I'd like to format the binary data with C++ to allow for graphical plotting
+* 7. As a programmer, I'd like to format the binary data with C++ because it is the fastest language with which I am most familier
 
 ### Non-Functional Requirements
 * 8. As a user I'd like a compact UI to make it easier to interact with the program
@@ -74,8 +74,8 @@ We've seen examples in papers and a TED Talk, but have not been able to find a p
   
 
 ###Methodology
-*We will be using a combination of Agile and Waterfall methodologies
-*We will be using Trello to track our progress, at https://trello.com/b/1oGbTCzA/binaryvisualization
+* We will be using a combination of Agile and Waterfall methodologies
+* We will be using Trello to track our progress, at https://trello.com/b/1oGbTCzA/binaryvisualization
 
 
 
