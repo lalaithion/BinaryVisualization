@@ -71,4 +71,11 @@ We've seen examples in papers and a TED Talk, but have not been able to find a p
   * 4 hours
 * 9. As a l33t h4x0r I'd like it to look sweet, like movie hacking, so I can look aw3s0m3!
   * 3 hours
+  
+
+###Methodology
+*We will be using a combination of Agile and Waterfall methodologies
+*We will be using Trello to track our progress, at https://trello.com/b/1oGbTCzA/binaryvisualization
+
+
 
