@@ -15,7 +15,7 @@ This tool allows for the visualization of raw binary data in a way that uses the
 Our goal initially will be to create a working prototype in C++ using OpenGL. Then, depending on how much time we have left, we will explore creating an desktop application (on some or all of the major platforms) or a web app.
 
 ## Vision Statement
-Ever wanted to look like a hacker, but sadly the movies always look cooler than what you actually do? This tool is both useful for looking at data and super cool.
+Ever wanted to look like a hacker, but sadly the movies always look cooler than what you actually do? This tool is both useful for looking at data and super sweet.
 
 ## Motivation
 We've seen examples in papers and a TED Talk, but have not been able to find a place where this software is available, and we would like to make it so.
@@ -48,10 +48,17 @@ We've seen examples in papers and a TED Talk, but have not been able to find a p
 ## Requirements
 
 ### User Requirements
-* A
+* Graphical Interface
+* File Input
+* Visualization Generation
+* Saving Capabilities
 
 ### Functional Requirements
-* B
+* Load Binary Data
+* Render Image in OpenGL
+* Formal Data with C++
 
 ### Non-Functional Requirements
-* C
+* Compact UI
+* Looks Sweet, like Movie Hacking
+
