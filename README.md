@@ -14,7 +14,7 @@ This tool allows for the visualization of raw binary data in a way that uses the
 
 Our goal initially will be to create a working prototype in C++ using OpenGL. Then, depending on how much time we have left, we will explore creating an desktop application (on some or all of the major platforms) or a web app.
 
-This tool could be used for applications such as data mining, 
+This tool could be used for applications such as data mining, packet analysis and malware detection.
 
 ## Vision Statement
 Ever wanted to look like a hacker, but sadly the movies always look cooler than what you actually do? This tool is both useful for looking at data and super sweet.
@@ -64,7 +64,7 @@ We've seen examples in papers and a TED Talk, but have not been able to find a p
   * 3 hours
 * 6. As a programmer, I'd like to render the image in OpenGL to allow for fast rendering
   * 8 hours
-* 7. Formal Data with C++
+* 7. As a programmer, I'd like to format the binary data with C++ to allow for graphical plotting
 
 ### Non-Functional Requirements
 * 8. As a user I'd like a compact UI to make it easier to interact with the program
