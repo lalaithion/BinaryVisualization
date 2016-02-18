@@ -22,24 +22,24 @@ We've seen examples in papers and a TED Talk, but have not been able to find a p
 
 ## Risks
 ### Testing
-*Lack of reliable testing data
-  *Solution: Create our own
-*Possibility that the results are not as clear as others have claimed
-  *Solution: Live with it
+* Lack of reliable testing data
+  * Solution: Create our own
+* Possibility that the results are not as clear as others have claimed
+  * Solution: Live with it
 ### OpenGL
 *Only one of our team knows OpenGL, so we need to make sure that we can learn that library
   *Solution: That member of the team can do all the work
 ### Scope
-*Underestimating the scope of the project may end with us aiming too high
-  *Solution: Assume everything will take 3 times as long
-*We may run into issues if we want to make this app work on all platforms
-  *Solution: Make a webapp if it's too hard
+* Underestimating the scope of the project may end with us aiming too high
+  * Solution: Assume everything will take 3 times as long
+* We may run into issues if we want to make this app work on all platforms
+  * Solution: Make a webapp if it's too hard
 ### Team Work
-*Josh is a loose cannon, dammit, but he's the best we've got
-*Izaak is known to have ties with the Communist Party
+* Josh is a loose cannon, dammit, but he's the best we've got
+* Izaak is known to have ties with the Communist Party
 ### Other
-*The government may notice our work and flag it as hacking related
-  *Solution: Pray
+* The government may notice our work and flag it as hacking related
+  * Solution: Pray
 
 ## Requirements
 ### User Requirements
