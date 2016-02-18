@@ -33,7 +33,7 @@ We've seen examples in papers and a TED Talk, but have not been able to find a p
 
 ### Scope
 * Underestimating the scope of the project may end with us aiming too high
-  * Solution: Assume everything will take 3 times as long
+  * Solution: Take this into account when setting deadlines
 * We may run into issues if we want to make this app work on all platforms
   * Solution: Make a webapp if it's too hard
 
@@ -48,17 +48,25 @@ We've seen examples in papers and a TED Talk, but have not been able to find a p
 ## Requirements
 
 ### User Requirements
-* Graphical Interface
-* File Input
-* Visualization Generation
-* Saving Capabilities
+* 1. As a user I would like a graphical interface to easily manipulate the program with
+  * 8 hours
+* 2. As a user, I would like to have a file uploading feature so I can run the program on arbitrary binaries
+  * 1 hour
+* 3. As a user, I would like the product to generate a visual representation of a binary file to anaylze 
+  * 8 hours
+* 4. As a user, I want saving capabilities to store my requirements
+  * 1 hour
 
 ### Functional Requirements
-* Load Binary Data
-* Render Image in OpenGL
-* Formal Data with C++
+* 5. As a programmer, I'd like the program to be able to load binary data so that it could be visually encoded
+  * 3 hours
+* 6. As a programmer, I'd like to render the image in OpenGL to allow for fast rendering
+  * 8 hours
+* 7. Formal Data with C++
 
 ### Non-Functional Requirements
-* Compact UI
-* Looks Sweet, like Movie Hacking
+* 8. As a user I'd like a compact UI to make it easier to interact with the program
+  * 4 hours
+* 9. As a l33t h4x0r I'd like it to look sweet, like movie hacking, so I can look aw3s0m3!
+  * 3 hours
 
