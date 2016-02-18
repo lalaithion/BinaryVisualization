@@ -27,8 +27,8 @@ We've seen examples in papers and a TED Talk, but have not been able to find a p
 * Possibility that the results are not as clear as others have claimed
   * Solution: Live with it
 ### OpenGL
-*Only one of our team knows OpenGL, so we need to make sure that we can learn that library
-  *Solution: That member of the team can do all the work
+* Only one of our team knows OpenGL, so we need to make sure that we can learn that library
+  * Solution: That member of the team can do all the work
 ### Scope
 * Underestimating the scope of the project may end with us aiming too high
   * Solution: Assume everything will take 3 times as long
