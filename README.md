@@ -10,7 +10,7 @@ Izaak Weiss - lalaithion
 Josh Anderson - janderso1337
 
 ## Description
-This tool allows for the visualization of raw binary data in a way that uses the patterns inherent within structured data to identify the information it contains. Here is the ted talk which introduced the idea to us https://youtu.be/cWpRxyqDgpM?t=451. This tool does not use headers or file extensions.
+This tool allows for the visualization of raw binary data in a way that uses the patterns inherent within structured data to identify the information it contains. Here is the ted talk which introduced the idea to us https://youtu.be/cWpRxyqDgpM?t=451, and here is a paper talking more about the same subject http://lib.dr.iastate.edu/cgi/viewcontent.cgi?article=4138&context=etd. This tool does not use headers or file extensions.
 
 Our goal initially will be to create a working prototype in C++ using OpenGL. Then, depending on how much time we have left, we will explore creating an desktop application (on some or all of the major platforms) or a web app.
 
