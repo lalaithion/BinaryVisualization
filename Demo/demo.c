@@ -19,8 +19,8 @@ unsigned int  texture;              //  32-bit location of texture representing 
 unsigned char image[DX * DY * 3];   //  Buffer holding the final image
 
 void generateTexture(); //  Convert image[] into a texture
-void display();
-int readFile();
+void display(); //  Draws the object the texture is rendered onto
+int readFile(); //  reads the file in and converts it into image[]
 
 int main(int argc,char* argv[])
 {
@@ -65,8 +65,17 @@ int readFile() {
          //  Converts from 1D character array to 3D RGB array
          int x = buf[i] % DX;
          int y = (buf[i + 1] % DY) * DY;
-         int color = 2; //  Each location has a RGB componenet: R=0, G=1, B=2
-         image[(x + y) * 3 + color] = 255; //  Currently only colors any hit at all to be pure blue, instead of drawing gradients based on frequency
+         if(image[(x + y) * 3 + 2] == 0) {
+             image[(x + y) * 3 + 2] = 255;
+         }
+         else if(image[(x + y) * 3 + 1] == 0) {
+             image[(x + y) * 3 + 1] = 255;
+         }
+         else if(image[(x + y) * 3 + 0] == 0) {
+             image[(x + y) * 3 + 0] = 255;
+         }
+         //int color = 2; //  Each location has a RGB componenet: R=0, G=1, B=2
+         //image[(x + y) * 3 + color] = 255; //  Currently only colors any hit at all to be pure blue, instead of drawing gradients based on frequency
       }
    }
    free(buf);
