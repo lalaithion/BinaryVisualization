@@ -14,7 +14,7 @@
 #define DY 256 //  Y dimension
 
 int asp = 1;                        //  Aspect ratio
-char* filename = "testFile.png";    //  Filename in
+char* filename = "testFile.txt";    //  Filename in
 unsigned int  texture;              //  32-bit location of texture representing the final graph
 unsigned char image[DX * DY * 3];   //  Buffer holding the final image
 
@@ -24,7 +24,9 @@ int readFile();
 
 int main(int argc,char* argv[])
 {
-   filename = argv[1];
+   if(argc != 1) {
+      filename = argv[1];
+   }
    glutInit(&argc,argv);
    //  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE); //  Not nessessary right now, but leaving it here in case it becomes nessessary later
    glutInitWindowSize(512, 512);
