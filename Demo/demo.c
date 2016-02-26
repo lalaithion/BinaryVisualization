@@ -10,8 +10,8 @@
 
 #define GL_GLEXT_PROTOTYPES
 
-#define DX 16 //  X dimension
-#define DY 16 //  Y dimension
+#define DX 256 //  X dimension
+#define DY 256 //  Y dimension
 
 int asp = 1;                        //  Aspect ratio
 char* filename = "testFile.txt";    //  Filename in
