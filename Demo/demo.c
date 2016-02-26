@@ -26,7 +26,7 @@ int main(int argc,char* argv[])
 {
    glutInit(&argc,argv);
    //  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE); //  Not nessessary right now, but leaving it here in case it becomes nessessary later
-   glutInitWindowSize(300, 300);
+   glutInitWindowSize(512, 512);
    glutCreateWindow("Texture Demo");
    
    glEnable(GL_TEXTURE_2D); //  Allows for textures to be used
