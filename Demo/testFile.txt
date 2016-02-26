@@ -1,0 +1,3 @@
+This file is a test. It's characters are graphed by the texture_test.c program. I guess it's Copyright because I did write it, but I don't really mind if you steal it. Everything else you shouldn't steal, though. Or at least credit us if you do. Or whatever. It's your life, I'm not your boss.
+
+...yet.
