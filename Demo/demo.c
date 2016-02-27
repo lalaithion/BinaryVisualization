@@ -14,7 +14,7 @@
 #define DY 256 //  Y dimension
 
 int asp = 1;                        //  Aspect ratio
-char* filename = "testFile.txt";    //  Filename in
+char* filename;    //  Filename in
 unsigned int  texture;              //  32-bit location of texture representing the final graph
 unsigned char image[DX * DY * 3];   //  Buffer holding the final image
 
@@ -31,15 +31,16 @@ int main(int argc,char* argv[])
    //  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE); //  Not nessessary right now, but leaving it here in case it becomes nessessary later
    glutInitWindowSize(512, 512);
    glutCreateWindow("Texture Demo");
-   
+
    glEnable(GL_TEXTURE_2D); //  Allows for textures to be used
-   glOrtho(-asp,+asp,-1,1,-1,1); //  Orthographic projection - sets the size of the camera
-   
-   memset(image,0,DX * DY); //  Clear buffer
-   
+   glOrtho(-asp,+asp,-1,1,-1,1); //  Orthographic projection (as opposed to perspective)
+                                 //  sets the size of the camera
+         
+   memset(image,0,DX * DY * 3); //  Clear buffer
+
    readFile();
    generateTexture();
-   
+
    glutDisplayFunc(display); //  Uses function to redisplay
    glutMainLoop(); //  Prevents program from closing
    
@@ -48,7 +49,7 @@ int main(int argc,char* argv[])
 
 int readFile() {
    #define BLOCK_SIZE 32
-   FILE* fp = fopen( filename, "rb" ); // "rb" is "read binary"
+   FILE* fp = fopen(filename, "rb" ); // "rb" is "read binary"
    
    /*
    //  Find size of file - probably useful later
@@ -63,19 +64,20 @@ int readFile() {
       int i;
       for (i = 0; i < length - 1; i++) {
          //  Converts from 1D character array to 3D RGB array
-         int x = buf[i] % DX;
-         int y = (buf[i + 1] % DY) * DY;
-         if(image[(x + y) * 3 + 2] == 0) {
-             image[(x + y) * 3 + 2] = 255;
+         int x = buf[i];
+         int y = (buf[i + 1]) * DY ;
+
+         if(image[(x + y ) * 3 + 2] == 0) {
+            image[(x + y) * 3 + 2] = 255;
          }
          else if(image[(x + y) * 3 + 1] == 0) {
-             image[(x + y) * 3 + 1] = 255;
+            image[(x + y) * 3 + 1] = 255;
          }
          else if(image[(x + y) * 3 + 0] == 0) {
-             image[(x + y) * 3 + 0] = 255;
+            image[(x + y) * 3 + 0] = 255;
          }
          //int color = 2; //  Each location has a RGB componenet: R=0, G=1, B=2
-         //image[(x + y) * 3 + color] = 255; //  Currently only colors any hit at all to be pure blue, instead of drawing gradients based on frequency
+         //image[(x + y) * 3 + color] = 255; //  This is the only blue mode coloring
       }
    }
    free(buf);
