@@ -56,7 +56,10 @@ int readFile() {
    #define BLOCK_SIZE 32
   
    FILE* fp = fopen(filename, "rb" ); // "rb" is "read binary"
-   
+   if(!fp) {
+    printf("File not valid\n");
+    exit(0);
+   } 
    /*
    //  Find size of file - probably useful later
    fseek(fp, 0, SEEK_END); //  Limited at 2GB
