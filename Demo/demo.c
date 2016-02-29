@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 #ifdef __APPLE__
    #include <GLUT/glut.h>
 #else
@@ -24,8 +25,12 @@ int readFile(); //  reads the file in and converts it into image[]
 
 int main(int argc,char* argv[])
 {
-   if(argc != 1) {
-      filename = argv[1];
+   if(argc != 1) {  
+    filename = argv[1];
+   }
+   else {
+    printf("Please input a file\n");
+    return 0;
    }
    glutInit(&argc,argv);
    //  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE); //  Not nessessary right now, but leaving it here in case it becomes nessessary later
@@ -49,6 +54,7 @@ int main(int argc,char* argv[])
 
 int readFile() {
    #define BLOCK_SIZE 32
+  
    FILE* fp = fopen(filename, "rb" ); // "rb" is "read binary"
    
    /*
