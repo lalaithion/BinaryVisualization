@@ -1,6 +1,7 @@
 //  If your version of OpenGL requires extentions to
 //  access the various functions, add them here
 
+#include <stdio.h>
 #include "CSCIx239.h"
 
 //
@@ -12,16 +13,16 @@ static char* ReadText(const char *file)
    char* buffer;
    //  Open file
    FILE* f = fopen(file,"rt");
-   if (!f) exit(1);
+    if (!f) {printf("file didn't open"); exit(1);}
    //  Seek to end to determine size, then rewind
    fseek(f,0,SEEK_END);
    n = ftell(f);
    rewind(f);
    //  Allocate memory for the whole file
    buffer = (char*)malloc(n+1);
-   if (!buffer) exit(1);
+if (!buffer) {printf("ReadText buffer didn't allocate");  exit(7);}
    //  Snarf the file
-   if (fread(buffer,n,1,f)!=1) exit(1);
+    if (fread(buffer,n,1,f)!=1) {printf("fread didn't work");  exit(2);}
    buffer[n] = 0;
    //  Close and return
    fclose(f);
@@ -39,13 +40,13 @@ static void PrintShaderLog(int obj,const char* file)
    {
       int n=0;
       char* buffer = (char *)malloc(len);
-      if (!buffer) exit(1);
+       if (!buffer) {printf("PrintShaderLog file didn't open");  exit(3);}
       glGetShaderInfoLog(obj,len,&n,buffer);
       fprintf(stderr,"%s:\n%s\n",file,buffer);
       free(buffer);
    }
    glGetShaderiv(obj,GL_COMPILE_STATUS,&len);
-   if (!len) exit(1);
+    if (!len) {printf("PrintShaderLog len");  exit(4);}
 }
 
 //
@@ -59,12 +60,12 @@ void PrintProgramLog(int obj)
    {
       int n=0;
       char* buffer = (char *)malloc(len);
-      if (!buffer) exit(1);
+      if (!buffer) exit(100);
       glGetProgramInfoLog(obj,len,&n,buffer);
       fprintf(stderr,"%s\n",buffer);
    }
    glGetProgramiv(obj,GL_LINK_STATUS,&len);
-   if (!len) exit(1);
+    if (!len) {printf("PrintProgramLog len");  exit(5);}
 }
 
 //

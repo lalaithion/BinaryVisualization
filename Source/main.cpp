@@ -42,7 +42,7 @@ int main(int argc,char* argv[])
    glOrtho(-asp,+asp,-1,1,-1,1); //  Orthographic projection (as opposed to perspective)
                                  //  sets the size of the camera
          
-   shader = CreateShaderProg("basic2.vert","basic.frag"); 
+   shader = CreateShaderProg("basic.vert","basic.frag"); 
    glUseProgram(shader);
    int id = glGetUniformLocation(shader,"texture");
    if (id>=0) glUniform1f(id,0);
