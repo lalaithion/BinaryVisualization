@@ -1,7 +1,6 @@
 //This is an example Colormap file
 //Colormap files have a very precise syntax
 //Any line beginning with two backslashes is a comment
-//All whitespace (except newlines) is ignored
 
 //The first line in a Colormap file should be text within quotes.
 //The name between these quotes is the name of the colormap.
@@ -16,31 +15,33 @@
 //Each section is then separated by a semicolon.
 //The following colormap is a simple greyscale
 
-0 > #000000
+//NOTE: TO AVOID ERRORS, #000000 SHOULD BE AVOIDED, THOUGH THIS SHOULD BE FIXED SOON.
+
+0 > #010101
 1 > FFFFFF
 
 //The # is optional.
 //other example colormaps are as follows, but commented out.
 
 //"Green"
-//0 > #000000
+//0 > #000100
 //1 > #00AA00
 
 //"Blue to Cyan"
-//0 > #000000
+//0 > #000001
 //0.333 > #0000FF
 //0.667 > #00FFFF
 //1 > #FFFFFF
 
 //"Heatmap"
-//0 > #000000
+//0 > #000001
 //0.25 > #0000FF
 //0.5 > #00FF00
 //0.75 > #FF0000
 //1 > #FFFFFF
 
 //"Purple and Orange"
-//0 > #000000
+//0 > #010001
 //.333 > #330066
 //1 > #FF6600
 

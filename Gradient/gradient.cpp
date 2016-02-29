@@ -9,12 +9,13 @@
 #include "gradient.h"
 
 // http://stackoverflow.com/questions/5891610/how-to-remove-characters-from-a-string
-void removeCharsFromString( std::string &str, char* charsToRemove )
+void removeCharsFromString( std::string &str, std::string charsToRemove )
 {
-   for ( unsigned int i = 0; i < strlen(charsToRemove); ++i )
-   {
-      str.erase( remove(str.begin(), str.end(), charsToRemove[i]), str.end() );
-   }
+    const char *  charls = charsToRemove.c_str();
+    for ( unsigned int i = 0; i < strlen(charls); ++i )
+    {
+       str.erase( remove(str.begin(), str.end(), charls[i]), str.end() );
+    }
 }
 
 bool pointSort (point i,point j) 
@@ -33,7 +34,6 @@ gradient::gradient(std::string filename, std::string mode)
 
 	while(std::getline(file,line).good())
 	{
-		removeCharsFromString(line," \t#");
 		if (line[0] == '/')
 		{
 			;
@@ -49,6 +49,7 @@ gradient::gradient(std::string filename, std::string mode)
 		}
 		else
 		{
+			removeCharsFromString(line," \t#");
 			int separator = line.find('>');
 			std::string p = line.substr(0,separator);
 			std::string c =line.substr(separator+1,6);
@@ -73,12 +74,19 @@ rgb gradient::getcolor(double position)
 	{
 		return color_curve.front().color;
 	}
-	int i = 0;
-	while(color_curve[i].position > position)
+	int loc;
+	for(int i = 0; i < color_curve.size(); i++)
 	{
-		i++;
+		if(color_curve[i].position == position)
+		{
+			return color_curve[i].color;
+		}
+		if(color_curve[i].position < position)
+		{
+			loc = i;
+		}
 	}
-	return interpolate(position,color_curve[i],color_curve[i+1], blendingmode);
+	return interpolate(position,color_curve[loc],color_curve[loc+1], blendingmode);
 }
 
 std::string gradient::getname()

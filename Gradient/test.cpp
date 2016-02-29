@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
 	{
 		inter = example.getcolor(i);
 		std::cout << i << "\t";
-		std::cout << int(inter.r * 255) << ",";
-		std::cout << int(inter.g * 255) << ",";
-		std::cout << int(inter.b * 255) << std::endl;
+		std::cout << int(inter.r*255) << ",";
+		std::cout << int(inter.g*255) << ",";
+		std::cout << int(inter.b*255) << std::endl;
 	}
 }
