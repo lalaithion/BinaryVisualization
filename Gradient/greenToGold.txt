@@ -1,0 +1,5 @@
+//This is a new colormap file
+"Green to Gold"
+0.0 > #000055
+0.5 > #00AA00
+1.0 > #FFFF00
