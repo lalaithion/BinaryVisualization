@@ -18,5 +18,6 @@ int main(int argc, char* argv[])
 
 	float norm[256][256] = {0.0};
 	normalizePairs(data, norm);
-	return 0;
+	
+
 }
