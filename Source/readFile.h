@@ -10,4 +10,7 @@ int normalizePairs(int (*data)[256], float (*normalized)[256]);
 /*  This function finds the maximum value in the array and divides every other value in the 
 array by it, and places these values in the normalized array */
 
+int normalizedToTexture(float (*normalized)[256], unsigned char image[256*256*3]);
+/* This function takes an array of floats as input and should fill image with greyscale values */
+
 #endif

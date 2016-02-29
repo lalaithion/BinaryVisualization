@@ -78,4 +78,6 @@ We've seen examples in papers and a TED Talk, but have not been able to find a p
 * We will be using Trello to track our progress, at https://trello.com/b/1oGbTCzA/binaryvisualization
 
 
-
+##Links
+http://www.rumint.org/gregconti/publications/2008_VizSEC_FileVisualization_v53_final.pdf
+http://www.rumint.org/gregconti/publications/taxonomy-bh.pdf
