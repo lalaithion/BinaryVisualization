@@ -68,7 +68,7 @@ int readFile() {
    */
    
    int length = 0; //  Used to prevent reading from beyond the end of the file
-   unsigned char* buf = malloc(BLOCK_SIZE);
+   unsigned char* buf = (unsigned char *)malloc(BLOCK_SIZE);
    while( (length = fread(buf, 1, BLOCK_SIZE, fp)) ) { //  fread( destination, element size, bytes, filestream ) returns the number of bytes read
       int i;
       for (i = 0; i < length - 1; i++) {
