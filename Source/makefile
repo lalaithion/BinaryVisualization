@@ -22,7 +22,9 @@ CLEAN=rm -f $(EXE) *.o *.a
 endif
 
 # Dependencies
-main.o: main.cpp
+main.o: main.cpp 
+
+shader.o: shader.c
 
 # Compile rules
 .c.o:
@@ -31,7 +33,7 @@ main.o: main.cpp
 	g++ -c $(CFLG) $<
 
 #  Link
-main:main.o
+main:main.o shader.o
 	gcc -O3 -o $@ $^   $(LIBS)
 
 #  Clean

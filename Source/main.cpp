@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "CSCIx239.h"
 
 #ifdef __APPLE__
    #include <GLUT/glut.h>
@@ -18,6 +18,7 @@ int asp = 1;                        //  Aspect ratio
 char* filename;    //  Filename in
 unsigned int  texture;              //  32-bit location of texture representing the final graph
 unsigned char image[DX * DY * 3];   //  Buffer holding the final image
+int shader = 0; //  Shader program
 
 void generateTexture(); //  Convert image[] into a texture
 void display(); //  Draws the object the texture is rendered onto
@@ -41,6 +42,11 @@ int main(int argc,char* argv[])
    glOrtho(-asp,+asp,-1,1,-1,1); //  Orthographic projection (as opposed to perspective)
                                  //  sets the size of the camera
          
+   shader = CreateShaderProg("basic2.vert","basic.frag"); 
+   glUseProgram(shader);
+   int id = glGetUniformLocation(shader,"texture");
+   if (id>=0) glUniform1f(id,0);
+
    memset(image,0,DX * DY * 3); //  Clear buffer
 
    readFile();
@@ -116,7 +122,9 @@ void display()
 {
    glClear(GL_COLOR_BUFFER_BIT); //  Refreshes colors
    glColor3f(1,1,1); //  Colored white so that texture will show up
-   
+
+
+
    //  Draws a square in front of the camera
    glBegin(GL_QUADS);
    
