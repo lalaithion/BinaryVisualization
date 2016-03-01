@@ -93,3 +93,15 @@ std::string gradient::getname()
 {
 	return name;
 }
+
+int gradient::toArray(float array[256*3])
+{
+	for(int i = 0; i < 256; i+=3)
+	{
+		rgb color = getcolor(i/256.0);
+		array[i] = color.r;
+		array[i+1] = color.g;
+		array[i+2] = color.b;
+	}
+	return 0;
+}

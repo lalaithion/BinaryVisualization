@@ -26,6 +26,10 @@ main.o: main.cpp
 
 shader.o: shader.c
 
+gradient.o: gradient.cpp
+
+interpolate.o: interpolate.cpp
+
 # Compile rules
 .c.o:
 	gcc -c $(CFLG) $<
@@ -33,8 +37,8 @@ shader.o: shader.c
 	g++ -c $(CFLG) $<
 
 #  Link
-main:main.o shader.o
-	gcc -O3 -o $@ $^   $(LIBS)
+main:main.o shader.o gradient.o interpolate.o
+	g++ -O3 -o $@ $^   $(LIBS)
 
 #  Clean
 clean:

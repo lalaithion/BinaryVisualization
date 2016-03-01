@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "CSCIx239.h"
+#include "gradient.h"
 
 #ifdef __APPLE__
    #include <GLUT/glut.h>
@@ -47,6 +48,13 @@ int main(int argc,char* argv[])
    int id = glGetUniformLocation(shader,"texture");
    if (id>=0) glUniform1f(id,0);
 
+   gradient g2g ("greenToGold.txt");
+   float array[256*3];
+   g2g.toArray(array);
+
+   int gradloc = glGetUniformLocation(shader, "gradient");
+   glUniform1fv(gradloc,256*3, array);
+
    memset(image,0,DX * DY * 3); //  Clear buffer
 
    readFile();
@@ -82,15 +90,9 @@ int readFile() {
          int x = buf[i];
          int y = (buf[i + 1]) * DY ;
 
-         if(image[(x + y ) * 3 + 2] == 0) {
-            image[(x + y) * 3 + 2] = 255;
-         }
-         else if(image[(x + y) * 3 + 1] == 0) {
-            image[(x + y) * 3 + 1] = 255;
-         }
-         else if(image[(x + y) * 3 + 0] == 0) {
-            image[(x + y) * 3 + 0] = 255;
-         }
+         if(image[(x + y ) * 3] < 255) {
+            image[(x + y) * 3] += 1;
+        }
          //int color = 2; //  Each location has a RGB componenet: R=0, G=1, B=2
          //image[(x + y) * 3 + color] = 255; //  This is the only blue mode coloring
       }
