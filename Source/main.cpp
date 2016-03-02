@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <iostream>
 #include "CSCIx239.h"
 #include "gradient.h"
 
@@ -48,12 +49,13 @@ int main(int argc,char* argv[])
    int id = glGetUniformLocation(shader,"texture");
    if (id>=0) glUniform1f(id,0);
 
-   gradient g2g ("greenToGold.txt");
+   gradient color_scheme ("default.gradient");
+
    float array[256*3];
-   g2g.toArray(array);
+   color_scheme.toArray(array);
 
    int gradloc = glGetUniformLocation(shader, "gradient");
-   glUniform1fv(gradloc,256*3, array);
+   glUniform1fv(gradloc, 256*3, array);
 
    memset(image,0,DX * DY * 3); //  Clear buffer
 
