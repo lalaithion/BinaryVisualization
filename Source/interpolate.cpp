@@ -29,7 +29,7 @@ hsv rgb2hsv(rgb in)
         out.s = (delta / max);                  // s
     } else {
         // if max is 0, then r = g = b = 0              
-            // s = 0, v is undefined
+        // s = 0, v is undefined
         out.s = 0.0;
         out.h = std::numeric_limits<double>::quiet_NaN();                            // its now undefined
         return out;
@@ -117,7 +117,20 @@ rgb interpolate(double current, point start, point end, std::string mode)
         hsv alpha = rgb2hsv(start.color);
         hsv beta = rgb2hsv(end.color);
         hsv result = {};
-        result.h = (alpha.h * (1 - percent)) + (beta.h * (percent));
+        if(alpha.h > beta.h)
+        {
+            double difference = beta.h - alpha.h;
+            difference *= percent;
+            result.h = alpha.h - difference;
+            if(result.h < 0)
+            {
+                result.h += 1;
+            }
+        }
+        else
+        {
+            result.h = (alpha.h * (1 - percent)) + (beta.h * (percent));
+        }
         result.s = (alpha.s * (1 - percent)) + (beta.s * (percent));
         result.v = (alpha.v * (1 - percent)) + (beta.v * (percent));
         return hsv2rgb(result);

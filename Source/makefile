@@ -1,4 +1,4 @@
-EXE=main
+EXE=main.out
 
 all: $(EXE)
 
@@ -37,7 +37,7 @@ interpolate.o: interpolate.cpp
 	g++ -c $(CFLG) $<
 
 #  Link
-main:main.o shader.o gradient.o interpolate.o
+main.out:main.o shader.o gradient.o interpolate.o
 	g++ -O3 -o $@ $^   $(LIBS)
 
 #  Clean
