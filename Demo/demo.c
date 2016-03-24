@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <QtGui>
 
 
 #ifdef __APPLE__
@@ -32,8 +33,15 @@ int main(int argc,char* argv[])
     printf("Please input a file\n");
     return 0;
    }
+
+   QApplication app(argc, argv);
+   QWidget window;
+   window.resize(320, 240);
+   window.show();
+   window.setWindowTitle(QApplication::translate("toplevel", "Top-level widget"));
+
    glutInit(&argc,argv);
-   //  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE); //  Not nessessary right now, but leaving it here in case it becomes nessessary later
+   //  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE); //  Not necessary right now, but leaving it here in case it becomes necessary later
    glutInitWindowSize(512, 512);
    glutCreateWindow(filename);
 
