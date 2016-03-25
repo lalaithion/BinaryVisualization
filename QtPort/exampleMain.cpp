@@ -21,8 +21,9 @@ public:
 
 private:
     GLuint m_posAttr;
-    GLuint m_colAttr;
-    GLuint m_matrixUniform;
+    GLuint m_texAttr;
+    GLuint m_textureUniform;
+
 
     QOpenGLShaderProgram *m_program;
     int m_frame;
@@ -53,18 +54,18 @@ int main(int argc, char **argv)
 
 static const char *vertexShaderSource =
     "attribute highp vec4 posAttr;\n"
-    "attribute lowp vec4 colAttr;\n"
-    "varying lowp vec4 col;\n"
-    "uniform highp mat4 matrix;\n"
+    "attribute highp vec4 texAttr;\n"
+    "varying lowp vec2 texCoord;\n"
     "void main() {\n"
-    "   col = colAttr;\n"
-    "   gl_Position = matrix * posAttr;\n"
+    "   texCoord = texAttr.xy;\n"
+    "   gl_Position = posAttr;\n"
     "}\n";
 
 static const char *fragmentShaderSource =
-    "varying lowp vec4 col;\n"
+    "varying lowp vec2 texCoord;\n"
+    "uniform lowp sampler2D tex;\n"
     "void main() {\n"
-    "   gl_FragColor = col;\n"
+    "   gl_FragColor = texture2D(tex, texCoord);\n"
     "}\n";
 
 void TriangleWindow::initialize()
@@ -74,11 +75,33 @@ void TriangleWindow::initialize()
     m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
     m_program->link();
     m_posAttr = m_program->attributeLocation("posAttr");
-    m_colAttr = m_program->attributeLocation("colAttr");
-    m_matrixUniform = m_program->uniformLocation("matrix");
-    DisplayWidget* disp = new DisplayWidget();
-    disp->show();
+    m_texAttr = m_program->attributeLocation("texAttr");
+    m_textureUniform = m_program->uniformLocation("tex");
 
+    GLuint texture;
+    glGenTextures(1,&texture);
+    //  Bind texture (state change - all texture calls now refer to this one specifically)
+    glBindTexture(GL_TEXTURE_2D,texture);
+
+    //  MAKE EVERYTHING POWERS OF TWO BECAUSE RASONS (or raisins, possibly. Probably not reasons. -Audrey)
+    unsigned char image[16*3] = {
+
+        0,0,255,255,255,255,255,255,255,0,255,0,
+        255,255,255,255,255,255,255,255,255,0,0,0,
+        255,255,255,0,0,0,255,255,255,255,255,255,
+        255,255,255,255,0,0,255,255,255,255,255,255,
+
+
+        //255,0,  0,    0  ,255,0  ,  0  ,0  ,255,
+        //255,255,255,  0  ,0  ,0  ,  255,255,255,
+        //255,0  ,0  ,  0,  255,0  ,  0,  0  ,255,
+    };
+    //  Copy image
+    glTexImage2D(GL_TEXTURE_2D,0,3,4,4,0,GL_RGB,GL_UNSIGNED_BYTE,image);
+
+    //  Scale linearly when image size doesn't match
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 }
 
 void TriangleWindow::render()
@@ -90,32 +113,39 @@ void TriangleWindow::render()
 
     m_program->bind();
 
-    QMatrix4x4 matrix;
+    /*QMatrix4x4 matrix;
     matrix.perspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
     matrix.translate(0, 0, -2);
     matrix.rotate(100.0f * m_frame / screen()->refreshRate(), 0, 1, 0);
 
     m_program->setUniformValue(m_matrixUniform, matrix);
-
+    */
     GLfloat vertices[] = {
-        0.0f, 0.707f,
-        -0.5f, -0.5f,
-        0.5f, -0.5f
+        -1.0f, -1.0f,
+        -1.0f, +1.0f,
+        +1.0f, -1.0f,
+        +1.0f, +1.0f,
+        +1.0f, -1.0f,
+        -1.0f, +1.0f,
     };
 
-    GLfloat colors[] = {
-        1.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 1.0f
+    GLfloat textureCoords[] = {
+        0.0f, 1.0f,
+        0.0f, 0.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 0.0f,
     };
 
+    m_program->setUniformValue(m_textureUniform, 0);
     glVertexAttribPointer(m_posAttr, 2, GL_FLOAT, GL_FALSE, 0, vertices);
-    glVertexAttribPointer(m_colAttr, 3, GL_FLOAT, GL_FALSE, 0, colors);
+    glVertexAttribPointer(m_texAttr, 2, GL_FLOAT, GL_FALSE, 0, textureCoords);
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);
