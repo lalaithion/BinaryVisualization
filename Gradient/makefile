@@ -42,7 +42,7 @@ test.o: test.cpp
 main.out:main.o gradient.o shader.o interpolate.o
 	g++ -O3 -o $@ $^   $(LIBS)
 
-test.out:test.o interpolate.o
+test.out:test.o interpolate.o gradient.o
 	g++ -O3 -o $@ $^  $(LIBS) 
 #  Clean
 clean:

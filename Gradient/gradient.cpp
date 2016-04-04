@@ -41,10 +41,6 @@ Gradient::Gradient(std::string filename)
 	}
 	std::sort(colorCurve.begin(),colorCurve.end(),pointSort);
 	file.close();
-	for(int i = 0; i < colorCurve.size(); i++)
-	{
-		printf("%d, %lf: %d, %d, %d\n",i,colorCurve[i].position,(int)(colorCurve[i].color.r*255.0),(int)(colorCurve[i].color.g*255.0),(int)(colorCurve[i].color.b*255.0));
-	}
 }
 
 bool Gradient::pointSort (point i,point j) 
@@ -89,7 +85,6 @@ std::string Gradient::parseName(std::string line)
 
 bool Gradient::parseSettings(std::string line)
 {
-	printf("%s\n",line.c_str());
 	line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
 	std::string comment = "//";
 	int comPos = line.find(comment);
@@ -98,12 +93,10 @@ bool Gradient::parseSettings(std::string line)
 	line = line.substr(use+3);
 	if(line.compare("hsv") == 0)
 	{
-		printf("true\n");
 		return true;
 	}
 	else if (line.compare("rgb") == 0)
 	{
-		printf("false\n");
 		return false;
 	}
 	else
