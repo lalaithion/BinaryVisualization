@@ -6,15 +6,29 @@
 
 #include "interpolate.h"
 
-class gradient
+class Gradient
 {
-	std::vector<point> color_curve;
+private:
+	//private variables
+	std::vector<point> colorCurve;
 	std::string name;
-	std::string blendingmode;
+	bool polar;
+	//private helper functions
+	bool parseSettings(std::string);
+	std::string parseName(std::string);
+	point parseData(std::string);
+	double parseLoc(std::string);
+	rgb parseColor(std::string);
+	rgb parseHex(std::string);
+	rgb parseTup(std::string);
+	static bool pointSort (point,point); 
 public:
-	gradient(std::string filename, std::string mode = "hsv");
-	rgb getcolor(double position);
-	std::string getname();
+	//constructor
+	Gradient(std::string);
+	//accessor functions
+	void getTexture(float*);
+	std::string getName();
 };
+
 
 #endif

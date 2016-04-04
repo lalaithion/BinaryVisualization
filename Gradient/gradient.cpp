@@ -1,95 +1,199 @@
-#include <string>
+#include <stdio.h>
+#include <iostream>
+#include <ctype.h>
+#include <iostream>
 #include <fstream>
 #include <algorithm>
-#include <stdlib.h>
-#include <vector>
-#include <cstdlib>
 
-#include "interpolate.h"
 #include "gradient.h"
 
-// http://stackoverflow.com/questions/5891610/how-to-remove-characters-from-a-string
-void removeCharsFromString( std::string &str, std::string charsToRemove )
+Gradient::Gradient(std::string filename)
 {
-    const char *  charls = charsToRemove.c_str();
-    for ( unsigned int i = 0; i < strlen(charls); ++i )
-    {
-       str.erase( remove(str.begin(), str.end(), charls[i]), str.end() );
-    }
+	std::ifstream file;
+	file.open(filename);
+	std::string line;
+	std::string stripped;
+	polar = true;
+	while(getline(file,line))
+	{
+		stripped = line;
+		stripped.erase(std::remove_if(stripped.begin(), stripped.end(), isspace), stripped.end());
+		if(stripped[0] == '"')
+		{
+			name = parseName(line);
+		}
+		else if(stripped[0] == 'u')
+		{
+			polar = parseSettings(line);
+		}
+		else if(stripped[0] == '/')
+		{
+
+		}
+		else if(stripped.size() < 3)
+		{
+			
+		}
+		else
+		{
+			colorCurve.push_back(parseData(line));
+		}
+	}
+	std::sort(colorCurve.begin(),colorCurve.end(),pointSort);
+	file.close();
+	for(int i = 0; i < colorCurve.size(); i++)
+	{
+		printf("%d, %lf: %d, %d, %d\n",i,colorCurve[i].position,(int)(colorCurve[i].color.r*255.0),(int)(colorCurve[i].color.g*255.0),(int)(colorCurve[i].color.b*255.0));
+	}
 }
 
-bool pointSort (point i,point j) 
+bool Gradient::pointSort (point i,point j) 
 {
 	return (i.position<j.position);
 }
 
-
-gradient::gradient(std::string filename, std::string mode)
+void Gradient::getTexture(float * array)
 {
-	blendingmode = mode;
-
-	std::fstream file (filename, std::fstream::in);
-	std::string line;
-
-
-	while(std::getline(file,line).good())
-	{
-		if (line[0] == '/')
-		{
-			;
-		}
-		else if (line[0] == '\0')
-		{
-
-		}
-		else if (line[0] == '"')
-		{
-			int endquote = line.find("\"",1);
-			name = line.substr(1,endquote);
-		}
-		else
-		{
-			removeCharsFromString(line," \t#");
-			int separator = line.find('>');
-			std::string p = line.substr(0,separator);
-			std::string c =line.substr(separator+1,6);
-			float red = strtol(c.substr(0,2).c_str(),NULL,16)/255.0;
-			float green = strtol(c.substr(2,2).c_str(),NULL,16)/255.0;
-			float blue = strtol(c.substr(4,2).c_str(),NULL,16)/255.0;
-			rgb color = {red,green,blue};
-			point current = {std::stod(p),color};
-			color_curve.push_back(current);
-		}
-	}
-	std::sort(color_curve.begin(),color_curve.end(),pointSort);
+	rgb current;
+	int index = 0;
+	for(int i = 0; i < 256; i++)
+    {
+    	double position = i/256.0;
+    	if (position > colorCurve[index+1].position)
+    	{
+    		index++;
+    	}
+        current = interpolate(position,colorCurve[index],colorCurve[index+1],"hsv");
+        array[3*i] = current.r;
+        array[3*i + 1] = current.g;
+        array[3*i + 2] = current.b;
+        //printf("%d, %f: %d, %d, %d\n",index,position,(int)(current.r*255.0),(int)(current.g*255.0),(int)(current.b*255.0));
+    }
 }
 
-rgb gradient::getcolor(double position)
-{
-	if(position >= 1)
-	{
-		return color_curve.back().color;
-	}
-	if(position <= 0)
-	{
-		return color_curve.front().color;
-	}
-	int loc;
-	for(int i = 0; i < color_curve.size(); i++)
-	{
-		if(color_curve[i].position == position)
-		{
-			return color_curve[i].color;
-		}
-		if(color_curve[i].position < position)
-		{
-			loc = i;
-		}
-	}
-	return interpolate(position,color_curve[loc],color_curve[loc+1], blendingmode);
-}
-
-std::string gradient::getname()
+std::string Gradient::getName()
 {
 	return name;
+}
+
+
+std::string Gradient::parseName(std::string line)
+{
+	std::string comment = "//";
+	int comPos = line.find(comment);
+	line = line.substr(1,comPos);
+	int endquote = line.find("\"");
+	line = line.substr(0,endquote);
+	return line;
+}
+
+bool Gradient::parseSettings(std::string line)
+{
+	printf("%s\n",line.c_str());
+	line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
+	std::string comment = "//";
+	int comPos = line.find(comment);
+	line = line.substr(1,comPos);
+	int use = line.find("use");
+	line = line.substr(use+3);
+	if(line.compare("hsv") == 0)
+	{
+		printf("true\n");
+		return true;
+	}
+	else if (line.compare("rgb") == 0)
+	{
+		printf("false\n");
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+point Gradient::parseData(std::string line)
+{
+	std::string delimiter = "->";
+	std::string comment = "//";
+	int delPos = line.find(delimiter);
+	std::string locStr = line.substr(0,delPos);
+	double location = parseLoc(locStr);
+	int comPos = line.find(comment);
+	std::string colStr;
+	if(comPos == std::string::npos)
+	{
+		colStr = line.substr(delPos+2);
+	}
+	else
+	{
+		colStr = line.substr(delPos+2,comPos);
+	}
+	rgb color = parseColor(colStr);
+	point result;
+	result.color = color;
+	result.position = location;
+	return result;
+}
+
+double Gradient::parseLoc(std::string line)
+{
+	line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
+	return std::stod(line);
+}
+
+rgb Gradient::parseColor(std::string line)
+{
+	line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
+	if (line[0] == '#')
+	{
+		return parseHex(line);
+	}
+	else if (line[0] == '(')
+	{
+		return parseTup(line);
+	}
+	else
+	{
+		rgb result;
+		result.r = 0;
+		result.g = 0;
+		result.b = 0;
+		return result;
+	}
+}
+
+rgb Gradient::parseHex(std::string line)
+{
+	std::string redStr = line.substr(1,2);
+	std::string greenStr = line.substr(3,2);
+	std::string blueStr = line.substr(5,2);
+	float redNum = stoi(redStr,NULL,16)/255.0;
+	float greenNum = stoi(greenStr,NULL,16)/255.0;
+	float blueNum = stoi(blueStr,NULL,16)/255.0;
+	rgb result;
+	result.r = redNum;
+	result.g = greenNum;
+	result.b = blueNum;
+	return result;
+}
+
+rgb Gradient::parseTup(std::string line)
+{
+	line.erase(std::remove(line.begin(), line.end(), '('), line.end());
+	line.erase(std::remove(line.begin(), line.end(), ')'), line.end());
+	std::string separator = ",";
+	int firstComma = line.find(separator);
+	int secondComma = line.find(separator, firstComma + 1);
+	std::string redStr = line.substr(0,firstComma);
+	std::string greenStr = line.substr(firstComma+1,secondComma-firstComma);
+	std::string blueStr = line.substr(secondComma+1);
+	float redNum = stoi(redStr)/255.0;
+	float greenNum = stoi(greenStr)/255.0;
+	float blueNum = stoi(blueStr)/255.0;
+	rgb result;
+	result.r = redNum;
+	result.g = greenNum;
+	result.b = blueNum;
+	return result;
 }

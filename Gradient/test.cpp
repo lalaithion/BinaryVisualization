@@ -1,25 +1,26 @@
-#include <iostream>
-#include <string>
+#include "interpolate.h"
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
 
-#include "gradient.h"
-
-int main(int argc, char *argv[])
+int main(int argc, char const *argv[])
 {
-	if(argc == 1)
-	{
-		return 0;
-	}
+	rgb alpha, beta;
+	xyz temp;
 
-	std::string filename = argv[1];
-	gradient example (filename);
-	rgb inter = {0,0,0};
-	std::cout << example.getname() << std::endl;
-	for(double i = 0.0; i <= 1.001; i += 0.01)
-	{
-		inter = example.getcolor(i);
-		std::cout << i << "\t";
-		std::cout << int(inter.r*255) << ",";
-		std::cout << int(inter.g*255) << ",";
-		std::cout << int(inter.b*255) << std::endl;
-	}
+	srand(time(NULL));
+
+	for(int i=0; i<4; i++){
+        alpha.r = (rand() % 256)/255.0;
+        alpha.g = (rand() % 256)/255.0;
+        alpha.b = (rand() % 256)/255.0;
+        temp = rgb2xyz(alpha);
+        beta = xyz2rgb(temp);
+        printf("%s\n",printcolor(alpha));
+        printf("%s\n",printcolor(temp));
+        printf("%s\n",printcolor(beta));
+        printf("------------------\n");
+    }
+
+	return 0;
 }
