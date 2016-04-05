@@ -1,88 +1,182 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-#include <string.h>
-#include <QtGui>
+#include "openglwindow.h"
+#include "readfile.h"
+#include "testSuite.h"
+
+#include <QtGui/QGuiApplication>
 #include <QApplication>
-#include <QWidget>
-//#include "TextureWidget.h"
-#include "displaywidget.h"
-//#include "main.h"
+#include <QtGui/QMatrix4x4>
+#include <QtGui/QOpenGLShaderProgram>
+#include <QtGui/QScreen>
+#include <QPushButton>
+#include <QGridLayout>
+#include <QtWidgets>
+
+#include <QtCore/qmath.h>
+
+#define DYNAMIC_ANALYSIS //Comment this line out to run without the tests for file I/O
+
+char* filename;
+unsigned char* publicImage;
+
+class TriangleWindow : public OpenGLWindow
+{
+public:
+    TriangleWindow();
+
+    void initialize() Q_DECL_OVERRIDE;
+    void render() Q_DECL_OVERRIDE;
+
+private:
+    GLuint m_posAttr;
+    GLuint m_texAttr;
+    GLuint m_textureUniform;
 
 
-/*#ifdef __APPLE__
-   #include <GLUT/glut.h>
-#else
-   #include <GL/glut.h>
-#endif*/
+    QOpenGLShaderProgram *m_program;
+    int m_frame;
+};
 
-using namespace std;
-/*
-int main(int argc, char* argv[])
+TriangleWindow::TriangleWindow()
+    : m_program(0)
+    , m_frame(0)
+{
+    QComboBox* shader = new QComboBox();
+    shader->addItem("Fixed Pipeline");
+    shader->addItem("Programmable Pipeline");
+
+    QGridLayout* layout = new QGridLayout;
+    layout->addWidget(new QLabel("Projection"),1,1);
+    layout->addWidget(shader,1,2);
+    //setLayout(layout);
+
+}
+
+int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-    QSurfaceFormat format;
-    format.setSamples(16);
-    if(argc == 1){
-        cout<<"Usage: Please give a filename."<<endl;
-        return 0;
-    }
-    TextureWidget* myTextureWidget = new TextureWidget(argv[1]);
-    //myTextureWidget->show();
-    DisplayWidget* disp = new DisplayWidget(myTextureWidget);
-    disp->show();
-   /*glutDisplayFunc(display); //  Uses function to redisplay
-   glutMainLoop(); //  Prevents program from closing
-   To display stuff, OpenGL needs something called a "context." Qt has a class that handles this, called QOpenGLContext.
-   */
-   //The equivalent of glutMainLoop is returning app.exec(), since that won't return until the user closes the application in the normal ways.
-/*
-   return app.exec();
+
+    char* filename = argv[1];
+    fileReader reader = fileReader(filename);
+
+    #ifdef DYNAMIC_ANALYSIS
+    testSuite tester = testSuite();
+    tester.testFileIO(&reader);
+    #endif
+
+    reader.readFile();
+    publicImage = reader.getImage();
+
+    //QSurfaceFormat format;
+    //format.setSamples(16);
+
+    TriangleWindow window;
+    //window.setFormat(format);
+    window.resize(640, 480);
+    window.show();
+
+    window.setAnimating(false);
+    return app.exec();
 }
 
+static const char *vertexShaderSource =
+    "attribute highp vec4 posAttr;\n"
+    "attribute highp vec4 texAttr;\n"
+    "varying lowp vec2 texCoord;\n"
+    "void main() {\n"
+    "   texCoord = texAttr.xy;\n"
+    "   gl_Position = posAttr;\n"
+    "}\n";
 
-/*
- *  Converts image[] array into RGB texture
- */
-/*
-void generateTexture() {
-   //  Create texture location
-   glGenTextures(1,&texture);
-   //  Bind texture (state change - all texture calls now refer to this one specifically)
-   glBindTexture(GL_TEXTURE_2D,texture);
+static const char *fragmentShaderSource =
+    "varying lowp vec2 texCoord;\n"
+    "uniform lowp sampler2D tex;\n"
+    "void main() {\n"
+    "   gl_FragColor = texture2D(tex, texCoord);\n"
+    "}\n";
 
-   //  Copy image
-   glTexImage2D(GL_TEXTURE_2D,0,3,DX,DY,0,GL_RGB,GL_UNSIGNED_BYTE,image);
-
-   //  Scale linearly when image size doesn't match
-   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-}
-
-void display()
+void TriangleWindow::initialize()
 {
-   glClear(GL_COLOR_BUFFER_BIT); //  Refreshes colors
-   glColor3f(1,1,1); //  Colored white so that texture will show up
+    m_program = new QOpenGLShaderProgram(this);
+    m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
+    m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
+    m_program->link();
+    m_posAttr = m_program->attributeLocation("posAttr");
+    m_texAttr = m_program->attributeLocation("texAttr");
+    m_textureUniform = m_program->uniformLocation("tex");
 
-   //  Draws a square in front of the camera
-   glBegin(GL_QUADS);
+    GLuint texture;
+    glGenTextures(1,&texture);
+    //  Bind texture (state change - all texture calls now refer to this one specifically)
+    glBindTexture(GL_TEXTURE_2D,texture);
 
-   glTexCoord2d(1,0);
-   glVertex2f( 1,-1);
+    //  MAKE EVERYTHING POWERS OF TWO BECAUSE RASONS (or raisins, possibly. Probably not reasons. -Audrey)
+    /*unsigned char image[16*3] = {
 
-   glTexCoord2d(1,1);
-   glVertex2f( 1, 1);
-
-   glTexCoord2d(0,1);
-   glVertex2f(-1, 1);
-
-   glTexCoord2d(0,0);
-   glVertex2f(-1,-1);
-
-   glEnd();
+        0,0,255,255,255,255,255,255,255,0,255,0,
+        255,255,255,255,255,255,255,255,255,0,0,0,
+        255,255,255,0,0,0,255,255,255,255,255,255,
+        255,255,255,255,0,0,255,255,255,255,255,255,
 
 
-   glFlush(); //  Outputs to screen
+        //255,0,  0,    0  ,255,0  ,  0  ,0  ,255,
+        //255,255,255,  0  ,0  ,0  ,  255,255,255,
+        //255,0  ,0  ,  0,  255,0  ,  0,  0  ,255,
+    };*/
+    //  Copy image
+    glTexImage2D(GL_TEXTURE_2D,0,3,DX,DY,0,GL_RGB,GL_UNSIGNED_BYTE,publicImage);
+
+    //  Scale linearly when image size doesn't match
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 }
-*/
 
+void TriangleWindow::render()
+{
+    const qreal retinaScale = devicePixelRatio();
+    glViewport(0, 0, width() * retinaScale, height() * retinaScale);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    m_program->bind();
+
+    /*QMatrix4x4 matrix;
+    matrix.perspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
+    matrix.translate(0, 0, -2);
+    matrix.rotate(100.0f * m_frame / screen()->refreshRate(), 0, 1, 0);
+
+    m_program->setUniformValue(m_matrixUniform, matrix);
+    */
+    GLfloat vertices[] = {
+        -1.0f, -1.0f,
+        -1.0f, +1.0f,
+        +1.0f, -1.0f,
+        +1.0f, +1.0f,
+        +1.0f, -1.0f,
+        -1.0f, +1.0f,
+    };
+
+    GLfloat textureCoords[] = {
+        0.0f, 1.0f,
+        0.0f, 0.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 0.0f,
+    };
+
+    m_program->setUniformValue(m_textureUniform, 0);
+    glVertexAttribPointer(m_posAttr, 2, GL_FLOAT, GL_FALSE, 0, vertices);
+    glVertexAttribPointer(m_texAttr, 2, GL_FLOAT, GL_FALSE, 0, textureCoords);
+
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(0);
+
+    m_program->release();
+
+    ++m_frame;
+}
