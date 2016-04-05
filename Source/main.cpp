@@ -19,7 +19,7 @@
 int asp = 1;                        //  Aspect ratio
 char* filename;    //  Filename in
 unsigned int  texture;              //  32-bit location of texture representing the final graph
-unsigned char image[DX * DY * 3];   //  Buffer holding the final image
+float image[DX * DY * 3];   //  Buffer holding the final image
 int shader = 0; //  Shader program
 
 void generateTexture(); //  Convert image[] into a texture
@@ -97,7 +97,7 @@ int readFile()
 
             if(image[(x + y ) * 3] < 255) 
             {
-                image[(x + y) * 3] += 1;
+                image[(x + y) * 3] += 0.01;
             }
         //int color = 2; //  Each location has a RGB componenet: R=0, G=1, B=2
         //image[(x + y) * 3 + color] = 255; //  This is the only blue mode coloring
@@ -120,7 +120,7 @@ void generateTexture()
     glBindTexture(GL_TEXTURE_2D,texture);
 
     //  Copy image
-    glTexImage2D(GL_TEXTURE_2D,0,3,DX,DY,0,GL_RGB,GL_UNSIGNED_BYTE,image);
+    glTexImage2D(GL_TEXTURE_2D,0,3,DX,DY,0,GL_RGB,GL_FLOAT,image);
 
     //  Scale linearly when image size doesn't match
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
