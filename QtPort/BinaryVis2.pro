@@ -12,17 +12,13 @@ TARGET = BinaryVis2
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    TextureWidget.cpp \
-    displaywidget.cpp \
+SOURCES +=\
     OpenGLWindow.cpp \
-    exampleMain.cpp
+    exampleMain.cpp \
+    readfile.cpp
 
-HEADERS  += mainwindow.h \
-    TextureWidget.h \
-    displaywidget.h \
-    main.h \
-    OpenGLWindow.h
+HEADERS  += \
+    OpenGLWindow.h \
+    readfile.h
 
 FORMS    += mainwindow.ui

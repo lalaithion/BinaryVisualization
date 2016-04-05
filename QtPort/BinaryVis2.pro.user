@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.2.2, 2016-03-24T09:01:12. -->
+<!-- Written by QtCreator 3.2.2, 2016-04-04T16:32:08. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -223,9 +223,9 @@
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">BinaryVis2</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/Qt/Tools/QtCreator/bin/BinaryVis2/BinaryVis2.pro</value>
-    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments">C:\\Qt\\Tools\\QtCreator\\bin\\BinaryVis2\\testFile.jpg</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">BinaryVis22</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/Users/Audrey/Documents/Audrey/Sophomore_Year_CU/BinaryVisualization/QtPort/BinaryVis2.pro</value>
+    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments">C:\\Users\\Audrey\\Documents\\Audrey\\Sophomore_Year_CU\\BinaryVisualization\\Demo\\testFile.jpg</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">BinaryVis2.pro</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseDyldImageSuffix">false</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseTerminal">false</value>
