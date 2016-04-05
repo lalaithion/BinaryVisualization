@@ -14,11 +14,13 @@ TEMPLATE = app
 
 SOURCES +=\
     OpenGLWindow.cpp \
-    exampleMain.cpp \
-    readfile.cpp
+    readfile.cpp \
+    main.cpp \
+    testSuite.cpp
 
 HEADERS  += \
     OpenGLWindow.h \
-    readfile.h
+    readfile.h \
+    testSuite.h
 
 FORMS    += mainwindow.ui

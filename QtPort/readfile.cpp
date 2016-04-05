@@ -1,11 +1,16 @@
 #include "readfile.h"
 
-int fileReader::readFile(char* myfile)
-{
-    #define BLOCK_SIZE 32
+
+fileReader::fileReader(char* myFileName){
+    myfile = myFileName;
     for(int i = 0; i < DX*DY*3; i++) {
         image[i] = 0;
     }
+}
+
+int fileReader::readFile()
+{
+    #define BLOCK_SIZE 32
     FILE* fp = fopen(myfile, "rb" ); // "rb" is "read binary"
     if(!fp) {
         printf("File %s not valid\n", myfile);

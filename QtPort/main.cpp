@@ -1,5 +1,6 @@
 #include "openglwindow.h"
 #include "readfile.h"
+#include "testSuite.h"
 
 #include <QtGui/QGuiApplication>
 #include <QApplication>
@@ -11,6 +12,8 @@
 #include <QtWidgets>
 
 #include <QtCore/qmath.h>
+
+#define DYNAMIC_ANALYSIS //Comment this line out to run without the tests for file I/O
 
 char* filename;
 unsigned char* publicImage;
@@ -48,64 +51,21 @@ TriangleWindow::TriangleWindow()
 
 }
 
-/*int readFile(char* filename) {
-    #define BLOCK_SIZE 32
-    if(filename == NULL) {
-        cout<<"Please input a file."<<endl;
-        exit(0);
-    }
-    //FILE* fp = fopen(filename, "rb" ); // "rb" is "read binary"
-    ifstream fp;
-    fp.open(filename);
-    if(!fp) {
-        cout<<"File not valid: "<<strerror(errno)<<" "<<filename<<endl;
-        exit(0);
-    }
-
-    int length = 0; //  Used to prevent reading from beyond the end of the file
-    while(!fp.eof()) {
-        char* buf = new(nothrow) char[BLOCK_SIZE];
-        if(buf == NULL) {
-            cout<<"Buffer allocation failed in readFile"<<endl;
-            exit(0);
-        }
-        fp.read(buf, BLOCK_SIZE);
-        length += BLOCK_SIZE;
-        cout<<"Squid"<<endl;
-
-       for (int i = 0; i < sizeof(buf)/sizeof(unsigned char); i++) {
-          //  Converts from 1D character array to 3D RGB array
-           cout<<buf[i]<<endl;
-          int x = buf[i];
-          int y = (buf[i + 1]) * DY ;
-
-          if(image[(x + y ) * 3 + 2] == 0) {
-             image[(x + y) * 3 + 2] = 255;
-          }
-          else if(image[(x + y) * 3 + 1] == 0) {
-             image[(x + y) * 3 + 1] = 255;
-          }
-          else if(image[(x + y) * 3 + 0] == 0) {
-             image[(x + y) * 3 + 0] = 255;
-          }
-          //int color = 2; //  Each location has a RGB componenet: R=0, G=1, B=2
-          //image[(x + y) * 3 + color] = 255; //  This is the only blue mode coloring
-       }
-       delete(buf);
-    }
-    fp.close();
-
-    return 0;
-}*/
-
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
     char* filename = argv[1];
-    fileReader reader;
-    reader.readFile(filename);
+    fileReader reader = fileReader(filename);
+
+    #ifdef DYNAMIC_ANALYSIS
+    testSuite tester = testSuite();
+    tester.testFileIO(&reader);
+    #endif
+
+    reader.readFile();
     publicImage = reader.getImage();
+
     //QSurfaceFormat format;
     //format.setSamples(16);
 
@@ -115,25 +75,6 @@ int main(int argc, char **argv)
     window.show();
 
     window.setAnimating(false);
-    /*QWidget window2;
-
-       QLabel *queryLabel = new QLabel(
-           QApplication::translate("Input Binary", "Binary:"));
-       QLineEdit *queryEdit = new QLineEdit();
-
-
-       QHBoxLayout *queryLayout = new QHBoxLayout();
-       queryLayout->addWidget(queryLabel);
-       queryLayout->addWidget(queryEdit);
-
-       QVBoxLayout *mainLayout = new QVBoxLayout();
-       mainLayout->addLayout(queryLayout);
-       window2.setLayout(mainLayout);
-
-       // Set up the model and configure the view...
-       window2.setWindowTitle(
-           QApplication::translate("Input", "Input Binary"));
-       window2.show();*/
     return app.exec();
 }
 

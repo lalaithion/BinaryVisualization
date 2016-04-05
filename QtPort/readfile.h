@@ -12,9 +12,11 @@ using namespace std;
 
 class fileReader {
     unsigned char image[DX * DY * 3];
+    char* myfile;
 public:
-    int readFile(char* myfile);
+    int readFile();
     unsigned char* getImage();
+    fileReader(char *myFileName);
 private:
 };
 
