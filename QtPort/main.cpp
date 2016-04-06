@@ -1,6 +1,6 @@
 #include "openglwindow.h"
 #include "readfile.h"
-#include "testSuite.h"
+#include "gradient.h"
 
 #include <QtGui/QGuiApplication>
 #include <QApplication>
@@ -16,7 +16,8 @@
 #define DYNAMIC_ANALYSIS //Comment this line out to run without the tests for file I/O
 
 char* filename;
-unsigned char* publicImage;
+unsigned int* publicImage;
+float gradient_array[256*3];
 
 class TriangleWindow : public OpenGLWindow
 {
@@ -55,16 +56,12 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    char* filename = argv[1];
-    fileReader reader = fileReader(filename);
+    Gradient test ("test3.gradient");
+    test.getTexture(gradient_array);
 
-    #ifdef DYNAMIC_ANALYSIS
-    testSuite tester = testSuite();
-    tester.testFileIO(&reader);
-    #endif
+    fileReader reader = fileReader("testFile.jpg");
 
-    reader.readFile();
-    publicImage = reader.getImage();
+    int max = reader.getImage(publicImage);
 
     //QSurfaceFormat format;
     //format.setSamples(16);
@@ -90,6 +87,7 @@ static const char *vertexShaderSource =
 static const char *fragmentShaderSource =
     "varying lowp vec2 texCoord;\n"
     "uniform lowp sampler2D tex;\n"
+    "uniform float gradient[256*3];\n"
     "void main() {\n"
     "   gl_FragColor = texture2D(tex, texCoord);\n"
     "}\n";
@@ -123,7 +121,10 @@ void TriangleWindow::initialize()
         //255,0  ,0  ,  0,  255,0  ,  0,  0  ,255,
     };*/
     //  Copy image
-    glTexImage2D(GL_TEXTURE_2D,0,3,DX,DY,0,GL_RGB,GL_UNSIGNED_BYTE,publicImage);
+    glTexImage2D(GL_TEXTURE_2D,0,1,DX,DY,0,GL_RGB,GL_UNSIGNED_INT,publicImage);
+
+    int gradloc = glGetUniformLocation(Shaders, "gradient");
+    glUniform1fv(gradloc, 256*3, gradient_array);
 
     //  Scale linearly when image size doesn't match
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);

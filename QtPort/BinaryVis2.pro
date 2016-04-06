@@ -16,11 +16,13 @@ SOURCES +=\
     OpenGLWindow.cpp \
     readfile.cpp \
     main.cpp \
-    testSuite.cpp
+    gradient.cpp \
+    interpolate.cpp
 
 HEADERS  += \
     OpenGLWindow.h \
     readfile.h \
-    testSuite.h
+    gradient.h \
+    interpolate.h
 
 FORMS    += mainwindow.ui
