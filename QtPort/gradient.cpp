@@ -13,7 +13,7 @@ Gradient::Gradient(std::string filename)
 	file.open(filename);
 	std::string line;
 	std::string stripped;
-	polar = true;
+    polar = true;
 	while(getline(file,line))
 	{
 		stripped = line;
@@ -54,15 +54,20 @@ void Gradient::getTexture(float * array)
 	int index = 0;
 	for(int i = 0; i < 256; i++)
     {
+        std::cout << "top" << std::endl;
     	double position = i/256.0;
+        std::cout << "position" << std::endl;
     	if (position > colorCurve[index+1].position)
     	{
     		index++;
     	}
+        std::cout << "index" << std::endl;
         current = interpolate(position,colorCurve[index],colorCurve[index+1],"hsv");
+        std::cout << "interpolate" << std::endl;
         array[3*i] = current.r;
         array[3*i + 1] = current.g;
         array[3*i + 2] = current.b;
+        std::cout << "assigned" << std::endl;
         //printf("%d, %f: %d, %d, %d\n",index,position,(int)(current.r*255.0),(int)(current.g*255.0),(int)(current.b*255.0));
     }
 }
