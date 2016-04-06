@@ -16,26 +16,30 @@ Gradient::Gradient(std::string filename)
     polar = true;
 	while(getline(file,line))
 	{
+        std::cout << line << std::endl;
 		stripped = line;
 		stripped.erase(std::remove_if(stripped.begin(), stripped.end(), isspace), stripped.end());
 		if(stripped[0] == '"')
 		{
+            std::cout << 1 << std::endl;
 			name = parseName(line);
 		}
 		else if(stripped[0] == 'u')
 		{
+            std::cout << 2 << std::endl;
 			polar = parseSettings(line);
 		}
 		else if(stripped[0] == '/')
 		{
-
+            std::cout << 3 << std::endl;
 		}
 		else if(stripped.size() < 3)
 		{
-			
+            std::cout << 4 << std::endl;
 		}
 		else
 		{
+            std::cout << 5 << std::endl;
 			colorCurve.push_back(parseData(line));
 		}
 	}
@@ -56,7 +60,7 @@ void Gradient::getTexture(float * array)
     {
         std::cout << "top" << std::endl;
     	double position = i/256.0;
-        std::cout << "position" << std::endl;
+        std::cout << colorCurve.size() << std::endl;
     	if (position > colorCurve[index+1].position)
     	{
     		index++;

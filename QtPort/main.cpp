@@ -57,6 +57,7 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
 
     Gradient test ("test3.gradient");
+    cout << "hello" << endl;
     test.getTexture(gradient_array);
 
     fileReader reader = fileReader("testFile.jpg");
