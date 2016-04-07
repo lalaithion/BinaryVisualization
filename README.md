@@ -77,7 +77,8 @@ We've seen examples in papers and a TED Talk, but have not been able to find a p
 * We will be using a combination of Agile and Waterfall methodologies
 * We will be using Trello to track our progress, at https://trello.com/b/1oGbTCzA/binaryvisualization
 
-
+##Testing
+* Our testing data, including TESTING.md, all of our screenshots and our pdfs are located in the TESTING directory
 ##Links
 http://www.rumint.org/gregconti/publications/2008_VizSEC_FileVisualization_v53_final.pdf
 http://www.rumint.org/gregconti/publications/taxonomy-bh.pdf
