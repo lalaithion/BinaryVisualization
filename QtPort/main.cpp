@@ -13,11 +13,19 @@
 
 #include <QtCore/qmath.h>
 
+#include <string.h>
+
 #define DYNAMIC_ANALYSIS //Comment this line out to run without the tests for file I/O
 
 char* filename;
 unsigned int* publicImage;
 float gradient_array[256*3];
+
+std::string red2green =
+    "\"Red to Green\"\n"
+    "use hsv \n"
+    "0.0 -> #FF0000\n"
+    "1.0 -> #00FF00\n";
 
 class TriangleWindow : public OpenGLWindow
 {
@@ -56,11 +64,10 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    Gradient test ("test3.gradient");
-    cout << "hello" << endl;
+    Gradient test (red2green);
     test.getTexture(gradient_array);
 
-    fileReader reader = fileReader("testFile.jpg");
+    fileReader reader = fileReader("../../../../testFile.jpg");
 
     int max = reader.getImage(publicImage);
 

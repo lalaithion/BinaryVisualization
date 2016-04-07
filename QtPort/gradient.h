@@ -22,12 +22,11 @@ private:
 	rgb parseHex(std::string);
 	rgb parseTup(std::string);
 	static bool pointSort (point,point); 
-
 public:
 	//constructor
 	Gradient(std::string);
 	//accessor functions
-    void getTexture(float*);
+	void getTexture(float*);
 	std::string getName();
 };
 

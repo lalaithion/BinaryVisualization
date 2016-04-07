@@ -186,9 +186,11 @@ rgb hsv2rgb(hsv in)
 
 rgb interpolate(double current, point start, point end, std::string mode)
 {
+    mode = "hsv";
 
     double percent = (current - start.position)/(end.position - start.position);
-
+    // Luv color test
+    
     //the following is working code. I am testing out the addition of the Luv color scheme above
     //printf("%d:", (int)polar);
     // percent is the distance between the start and end we are

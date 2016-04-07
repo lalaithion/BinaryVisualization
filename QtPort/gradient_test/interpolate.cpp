@@ -3,7 +3,6 @@
 #include <iostream>
 #include <stdio.h>
 #include <cmath>
-#include <gsl/gsl_blas.h>
 
 #include "interpolate.h"
 
@@ -28,18 +27,6 @@ const char * printcolor(hsv c)
     result += std::to_string(c.s);
     result += ", v=";
     result += std::to_string(c.v);
-    return result.c_str();
-}
-
-const char * printcolor(xyz c)
-{
-    std::string result;
-    result = "x=";
-    result += std::to_string(c.x);
-    result += ", y=";
-    result += std::to_string(c.y);
-    result += ", z=";
-    result += std::to_string(c.z);
     return result.c_str();
 }
 
@@ -197,85 +184,12 @@ rgb hsv2rgb(hsv in)
 
 // this is what I've written
 
-rgb xyz2rgb(xyz in)
-{
-    double t[] = { 3.240479, -1.537150, -0.498535,
-                  -0.969256,  1.875992,  0.041556,
-                   0.055648, -0.204043,  1.057311 };
-
-    double v[] = { in.x, 
-                   in.y, 
-                   in.z };
-
-    double r[] = { 0,
-                   0,
-                   0 };
-
-    gsl_matrix_view transform = gsl_matrix_view_array(t, 3, 3);
-    gsl_matrix_view vector = gsl_matrix_view_array(v, 3, 1);
-    gsl_matrix_view result = gsl_matrix_view_array(r, 3, 1);
-
-
-    //performs 'result = transform * vector' matrix operation.
-    gsl_blas_dgemm (CblasNoTrans, CblasNoTrans,
-                    1.0, &transform.matrix, &vector.matrix,
-                    0.0, &result.matrix);
-
-    rgb returnable;
-    returnable.r = r[0];
-    returnable.g = r[1];
-    returnable.b = r[2];
-
-    return returnable;
-}
-
-
-xyz rgb2xyz(rgb in){
-
-    double t[] = { 0.412453, 0.357580, 0.180423,
-                   0.212671, 0.715160, 0.072169,
-                   0.019334, 0.119193, 0.950227 };
-
-    double v[] = { in.r, 
-                   in.g, 
-                   in.b };
-
-    double r[] = { 0,
-                   0,
-                   0 };
-
-    gsl_matrix_view transform = gsl_matrix_view_array(t, 3, 3);
-    gsl_vector_view vector = gsl_vector_view_array(v, 3);
-    gsl_vector_view result = gsl_vector_view_array(r, 3);
-
-
-    //performs 'result = transform * vector' matrix operation.
-    gsl_blas_dgemv (CblasNoTrans, 1.0, &transform.matrix, 
-                    &vector.vector, 0.0, &result.vector);
-
-    xyz returnable;
-    returnable.x = r[0];
-    returnable.y = r[1];
-    returnable.z = r[2];
-
-    return returnable;
-}
-
-
 rgb interpolate(double current, point start, point end, std::string mode)
 {
+    mode = "hsv";
 
     double percent = (current - start.position)/(end.position - start.position);
     // Luv color test
-    if( mode.compare("xyz") == 0 ) {
-        xyz alpha = rgb2xyz(start.color);
-        xyz beta = rgb2xyz(end.color);
-        xyz result;
-        result.x = (alpha.x * (1 - percent)) + (beta.x * (percent));
-        result.y = (alpha.y * (1 - percent)) + (beta.y * (percent));
-        result.z = (alpha.z * (1 - percent)) + (beta.z * (percent));
-        return xyz2rgb(result);
-    }
     
     //the following is working code. I am testing out the addition of the Luv color scheme above
     //printf("%d:", (int)polar);

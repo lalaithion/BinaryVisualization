@@ -23,6 +23,7 @@ const char * printcolor(rgb c);
 
 const char * printcolor(hsv c);
 
+
 //converts a rgb struct to an hsv struct
 hsv rgb2hsv(rgb in);
 

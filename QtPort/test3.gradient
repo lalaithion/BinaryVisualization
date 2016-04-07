@@ -1,9 +1,0 @@
-// this is a comment
-
-// this is the name of the gradient
-"Black to the Fuschia"
-use hsv
-
-// these are the data lines
-0.0 -> #0000FF
-1.0 -> #00FF00

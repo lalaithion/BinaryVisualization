@@ -2,49 +2,45 @@
 #include <iostream>
 #include <ctype.h>
 #include <iostream>
-#include <fstream>
+#include <sstream>
 #include <algorithm>
 
 #include "gradient.h"
 
-Gradient::Gradient(std::string filename)
+Gradient::Gradient(std::string gradient)
 {
-	std::ifstream file;
-	file.open(filename);
+    std::stringstream stream;
+    stream << gradient;
 	std::string line;
 	std::string stripped;
-    polar = true;
-	while(getline(file,line))
+	polar = true;
+    while(getline(stream,line))
 	{
         std::cout << line << std::endl;
 		stripped = line;
 		stripped.erase(std::remove_if(stripped.begin(), stripped.end(), isspace), stripped.end());
 		if(stripped[0] == '"')
 		{
-            std::cout << 1 << std::endl;
 			name = parseName(line);
 		}
 		else if(stripped[0] == 'u')
 		{
-            std::cout << 2 << std::endl;
 			polar = parseSettings(line);
 		}
 		else if(stripped[0] == '/')
 		{
-            std::cout << 3 << std::endl;
+
 		}
 		else if(stripped.size() < 3)
 		{
-            std::cout << 4 << std::endl;
+			
 		}
 		else
 		{
-            std::cout << 5 << std::endl;
 			colorCurve.push_back(parseData(line));
 		}
 	}
 	std::sort(colorCurve.begin(),colorCurve.end(),pointSort);
-	file.close();
 }
 
 bool Gradient::pointSort (point i,point j) 
@@ -58,20 +54,15 @@ void Gradient::getTexture(float * array)
 	int index = 0;
 	for(int i = 0; i < 256; i++)
     {
-        std::cout << "top" << std::endl;
     	double position = i/256.0;
-        std::cout << colorCurve.size() << std::endl;
     	if (position > colorCurve[index+1].position)
     	{
     		index++;
     	}
-        std::cout << "index" << std::endl;
         current = interpolate(position,colorCurve[index],colorCurve[index+1],"hsv");
-        std::cout << "interpolate" << std::endl;
         array[3*i] = current.r;
         array[3*i + 1] = current.g;
         array[3*i + 2] = current.b;
-        std::cout << "assigned" << std::endl;
         //printf("%d, %f: %d, %d, %d\n",index,position,(int)(current.r*255.0),(int)(current.g*255.0),(int)(current.b*255.0));
     }
 }

@@ -2,20 +2,21 @@
 #include <iostream>
 #include <ctype.h>
 #include <iostream>
-#include <fstream>
+#include <sstream>
 #include <algorithm>
 
 #include "gradient.h"
 
-Gradient::Gradient(std::string filename)
+Gradient::Gradient(std::string gradient)
 {
-	std::ifstream file;
-	file.open(filename);
+    std::stringstream stream;
+    stream << gradient;
 	std::string line;
 	std::string stripped;
 	polar = true;
-	while(getline(file,line))
+    while(getline(stream,line))
 	{
+        std::cout << line << std::endl;
 		stripped = line;
 		stripped.erase(std::remove_if(stripped.begin(), stripped.end(), isspace), stripped.end());
 		if(stripped[0] == '"')
@@ -40,7 +41,6 @@ Gradient::Gradient(std::string filename)
 		}
 	}
 	std::sort(colorCurve.begin(),colorCurve.end(),pointSort);
-	file.close();
 }
 
 bool Gradient::pointSort (point i,point j) 

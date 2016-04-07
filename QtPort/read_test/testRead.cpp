@@ -4,7 +4,8 @@
 int main()
 {
 	fileReader ascii ("ascii.txt");
-	unsigned char * image = ascii.getImage();
+    unsigned int * image;
+    ascii.getImage(image);
 
 	for(int i = 127; i < 256; i++) {
 		for(int j = 127; j < 256; j++) {
@@ -13,7 +14,7 @@ int main()
 	}
 
 	fileReader jpeg ("test.jpeg");
-	image = jpeg.getImage();
+	jpeg.getImage(image);
 
 	for(int i = 0; i < 256; i++) {
 		for(int j = 0; j < 256; j++) {

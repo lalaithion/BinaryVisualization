@@ -1,3 +1,7 @@
+EXE=test.out
+
+all: $(EXE)
+
 CLEAN=rm -f $(EXE) *.o *.a
 
 CFLG=-O3 -Wall
