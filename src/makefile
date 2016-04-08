@@ -1,0 +1,45 @@
+EXE=main.out
+
+all: $(EXE)
+
+#  MinGW
+ifeq "$(OS)" "Windows_NT"
+CFLG=-O3 -Wall
+LIBS=-lglut32cu -lglu32 -lopengl32
+CLEAN=rm *.exe *.o *.a
+else
+#  OSX
+ifeq "$(shell uname)" "Darwin"
+CFLG=-O3 -Wall -Wno-deprecated-declarations
+LIBS=-framework GLUT -framework OpenGL
+#  Linux/Unix/Solaris
+else
+CFLG=-O3 -Wall
+LIBS=-lglut -lGLU -lGL -lm
+endif
+#  OSX/Linux/Unix/Solaris
+CLEAN=rm -f $(EXE) *.o *.a
+endif
+
+# Dependencies
+main.o: main.cpp 
+
+shader.o: shader.c
+
+gradient.o: gradient.cpp
+
+interpolate.o: interpolate.cpp
+
+# Compile rules
+.c.o:
+	gcc -c $(CFLG) $<
+.cpp.o:
+	g++ -c $(CFLG) $<
+
+#  Link
+main.out:main.o shader.o gradient.o interpolate.o
+	g++ -O3 -o $@ $^   $(LIBS)
+
+#  Clean
+clean:
+	$(CLEAN)
