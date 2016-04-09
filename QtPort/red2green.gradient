@@ -1,9 +1,0 @@
-// this is a comment
-
-// this is the name of the gradient
-"Red 2 Green"
-use hsv
-
-// these are the data lines
-0.0 -> #FF0000
-1.0 -> #00FF00
