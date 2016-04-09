@@ -59,3 +59,12 @@ void powNormalize(unsigned int* image, float* normalized, float exponent){
     }
 }
 
+void logNormalize(unsigned int* image, float* normalized, float base) {
+    float scale = log(base);
+    float max = log((float)getMax(image))/log(base);
+    for(int i = 0; i < DX*DY; i++)
+    {
+        normalized[i] = log(image[i])/(scale*max);
+    }
+}
+

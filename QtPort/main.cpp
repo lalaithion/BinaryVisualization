@@ -15,7 +15,6 @@
 
 #include <string.h>
 
-#define DYNAMIC_ANALYSIS //Comment this line out to run without the tests for file I/O
 float image[256*256];
 float gradient_array[256*3];
 
@@ -24,6 +23,23 @@ std::string red2green =
     "usehsv\n"
     "0.0->#FF0000\n"
     "1.0->#00FF00\n";
+
+static const char *vertexShaderSource =
+    "attribute highp vec4 posAttr;\n"
+    "attribute highp vec4 texAttr;\n"
+    "varying lowp vec2 texCoord;\n"
+    "void main() {\n"
+    "   texCoord = texAttr.xy;\n"
+    "   gl_Position = posAttr;\n"
+    "}\n";
+
+static const char *fragmentShaderSource =
+    "varying lowp vec2 texCoord;\n"
+    "uniform lowp sampler2D tex;\n"
+    "uniform float gradient[256*3];\n"
+    "void main() {\n"
+    "   gl_FragColor = texture2D(tex, texCoord);\n"
+    "}\n";
 
 class TriangleWindow : public OpenGLWindow
 {
@@ -43,6 +59,35 @@ private:
     int m_frame;
 };
 
+void generateTexture(unsigned int* image);
+
+int main(int argc, char **argv)
+{
+    QApplication app(argc, argv);
+
+    //Alex Filename
+    //char* filename = "C:/Users/Alexander/Documents/BinaryVisualization/testfiles/bird.wav";
+
+    //Izaak Filename
+    char filename[] = "/Users/izaakweiss/Desktop/BinaryVisualization/sprint_demo.pptx";
+
+    //Read in file
+    unsigned int buffer[256*256];
+    readfile(filename, buffer);
+
+    //Choose a normalization
+    //linearNormalize(buffer, image,200);
+    logNormalize(buffer, image);
+    //powNormalize(buffer, image,0.13);
+
+    //Display our image
+    TriangleWindow window;
+    window.resize(640, 480);
+    window.show();
+
+    return app.exec();
+}
+
 TriangleWindow::TriangleWindow()
     : m_program(0)
     , m_frame(0)
@@ -58,60 +103,6 @@ TriangleWindow::TriangleWindow()
 
 }
 
-void generateTexture(unsigned int* image);
-
-int main(int argc, char **argv)
-{
-    std::cout<<"This code sucks";
-    QApplication app(argc, argv);
-
-    //Gradient test (red2green);
-    std::cout<<"AAAAAAAAA!";
-    //test.getTexture(gradient_array);
-
-    //fileReader reader = fileReader("C:/Program Files (x86)/Adobe/Adobe Flash CS5/flash.exe");
-
-    //publicImage = reader.getBuffer();
-    //std::cout << publicImage[1] << " " << publicImage[5] << '\n';
-
-    //QSurfaceFormat format;
-    //format.setSamples(16);
-
-    char* filename = "C:/Users/Alexander/Documents/BinaryVisualization/testfiles/bird.wav";
-    unsigned int buffer[256*256];
-    readfile(filename, buffer);
-    linearNormalize(buffer, image, 200);
-    //powNormalize(buffer, image,0.13);
-    //generateTexture(image);
-
-    TriangleWindow window;
-    //window.setFormat(format);
-    window.resize(640, 480);
-    window.show();
-
-    //window.setAnimating(false);
-    return app.exec();
-}
-
-static const char *vertexShaderSource =
-    "attribute highp vec4 posAttr;\n"
-    "attribute highp vec4 texAttr;\n"
-    "varying lowp vec2 texCoord;\n"
-    "void main() {\n"
-    "   texCoord = texAttr.xy;\n"
-    "   gl_Position = posAttr;\n"
-    "}\n";
-
-static const char *fragmentShaderSource =
-    "varying lowp vec2 texCoord;\n"
-    "uniform lowp sampler2D tex;\n"
-    "uniform float gradient[256*3];\n"
-    "void main() {\n"
-    "   gl_FragColor = texture2D(tex, texCoord);\n"
-                                                                     //"   gl_FragColor = vec4(texCoord.s, 0.5, texCoord.t,1);\n"
-    "}\n";
-
-
 void TriangleWindow::initialize()
 {
     m_program = new QOpenGLShaderProgram(this);
@@ -124,42 +115,11 @@ void TriangleWindow::initialize()
 
     GLuint texture;
     glGenTextures(1,&texture);
+
     //  Bind texture (state change - all texture calls now refer to this one specifically)
     glBindTexture(GL_TEXTURE_2D,texture);
-
-    //  MAKE EVERYTHING POWERS OF TWO BECAUSE RASONS (or raisins, possibly. Probably not reasons. -Audrey)
-    /*unsigned char image[16*3] = {
-
-        0,0,255,255,255,255,255,255,255,0,255,0,
-        255,255,255,255,255,255,255,255,255,0,0,0,
-        255,255,255,0,0,0,255,255,255,255,255,255,
-        255,255,255,255,0,0,255,255,255,255,255,255,
-
-
-        //255,0,  0,    0  ,255,0  ,  0  ,0  ,255,
-        //255,255,255,  0  ,0  ,0  ,  255,255,255,
-        //255,0  ,0  ,  0,  255,0  ,  0,  0  ,255,
-    };*/
-    //  Copy image
-    //glTexImage2D(GL_TEXTURE_2D,0,1,DX,DY,0,GL_RGB,GL_UNSIGNED_INT,publicImage);
     glTexImage2D(GL_TEXTURE_2D,0,1,256,256,0,GL_LUMINANCE,GL_FLOAT,image);
-    /*float image[16] = {
 
-        0,0,255,255,255,255,255,255,255,0,.5,1,
-        255,255,255
-
-
-        //255,0,  0,    0  ,255,0  ,  0  ,0  ,255,
-        //255,255,255,  0  ,0  ,0  ,  255,255,255,
-        //255,0  ,0  ,  0,  255,0  ,  0,  0  ,255,
-    };*/
-    //  Copy image
-    //glTexImage2D(GL_TEXTURE_2D,0,1,4,4,0,GL_LUMINANCE,GL_FLOAT,image);
-
-    //int gradloc = glGetUniformLocation(Shaders, "gradient");
-    //glUniform1fv(gradloc, 256*3, gradient_array);
-
-    //  Scale linearly when image size doesn't match
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 }
@@ -173,13 +133,6 @@ void TriangleWindow::render()
 
     m_program->bind();
 
-    /*QMatrix4x4 matrix;
-    matrix.perspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
-    matrix.translate(0, 0, -2);
-    matrix.rotate(100.0f * m_frame / screen()->refreshRate(), 0, 1, 0);
-
-    m_program->setUniformValue(m_matrixUniform, matrix);
-    */
     GLfloat vertices[] = {
         -1.0f, -1.0f,
         -1.0f, +1.0f,
