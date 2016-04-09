@@ -3,31 +3,22 @@
 #include <iostream>
 #include <stdio.h>
 #include <cmath>
+#include <sstream>
 
 #include "interpolate.h"
 
 const char * printcolor(rgb c)
 {
-    std::string result;
-    result = "r=";
-    result += std::to_string(c.r);
-    result += ", g=";
-    result += std::to_string(c.g);
-    result += ", b=";
-    result += std::to_string(c.b);
-    return result.c_str();
+    std::stringstream colorStream;
+    colorStream << "r=" << c.r << ", g=" << c.g << ", b=" << c.b;
+    return colorStream.str().c_str();
 }
 
 const char * printcolor(hsv c)
 {
-    std::string result;
-    result = "h=";
-    result += std::to_string(c.h);
-    result += ", s=";
-    result += std::to_string(c.s);
-    result += ", v=";
-    result += std::to_string(c.v);
-    return result.c_str();
+    std::stringstream colorStream;
+    colorStream << "r=" << c.h << ", g=" << c.s << ", b=" << c.v;
+    return colorStream.str().c_str();
 }
 
 // http://stackoverflow.com/questions/3018313/algorithm-to-convert-rgb-to-hsv-and-hsv-to-rgb-in-range-0-255-for-both

@@ -4,20 +4,28 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
+#include <math.h>
 
 #define DX 256 //  X dimension
 #define DY 256 //  Y dimension
 #define BLOCK_SIZE 32
+#define IMAGE_SIZE 256
 
-using namespace std;
+int readfile(char* filename, unsigned int* image);
+int getMax(unsigned int* image);
+void linearNormalize(unsigned int* image, float* normalized, float scale = 1);
+void powNormalize(unsigned int* image, float* normalized, float exponent = 0.5);
+
+/*using namespace std;
 
 class fileReader {
     unsigned int image[DX * DY];
     char* myfile;
     int readFile();
 public:
-    int getImage(unsigned int *returnloc);
+    int getMax();
+    unsigned int* getBuffer();
     fileReader(char *myFileName);
 };
-
+*/
 #endif // READFILE_H

@@ -16,16 +16,14 @@
 #include <string.h>
 
 #define DYNAMIC_ANALYSIS //Comment this line out to run without the tests for file I/O
-
-char* filename;
-unsigned int* publicImage;
+float image[256*256];
 float gradient_array[256*3];
 
 std::string red2green =
-    "\"Red to Green\"\n"
-    "use hsv \n"
-    "0.0 -> #FF0000\n"
-    "1.0 -> #00FF00\n";
+    "\"RedtoGreen\"\n"
+    "usehsv\n"
+    "0.0->#FF0000\n"
+    "1.0->#00FF00\n";
 
 class TriangleWindow : public OpenGLWindow
 {
@@ -60,26 +58,38 @@ TriangleWindow::TriangleWindow()
 
 }
 
+void generateTexture(unsigned int* image);
+
 int main(int argc, char **argv)
 {
+    std::cout<<"This code sucks";
     QApplication app(argc, argv);
 
-    Gradient test (red2green);
-    test.getTexture(gradient_array);
+    //Gradient test (red2green);
+    std::cout<<"AAAAAAAAA!";
+    //test.getTexture(gradient_array);
 
-    fileReader reader = fileReader("../../../../testFile.jpg");
+    //fileReader reader = fileReader("C:/Program Files (x86)/Adobe/Adobe Flash CS5/flash.exe");
 
-    int max = reader.getImage(publicImage);
+    //publicImage = reader.getBuffer();
+    //std::cout << publicImage[1] << " " << publicImage[5] << '\n';
 
     //QSurfaceFormat format;
     //format.setSamples(16);
+
+    char* filename = "C:/Users/Alexander/Documents/BinaryVisualization/testfiles/bird.wav";
+    unsigned int buffer[256*256];
+    readfile(filename, buffer);
+    linearNormalize(buffer, image, 200);
+    //powNormalize(buffer, image,0.13);
+    //generateTexture(image);
 
     TriangleWindow window;
     //window.setFormat(format);
     window.resize(640, 480);
     window.show();
 
-    window.setAnimating(false);
+    //window.setAnimating(false);
     return app.exec();
 }
 
@@ -98,7 +108,9 @@ static const char *fragmentShaderSource =
     "uniform float gradient[256*3];\n"
     "void main() {\n"
     "   gl_FragColor = texture2D(tex, texCoord);\n"
+                                                                     //"   gl_FragColor = vec4(texCoord.s, 0.5, texCoord.t,1);\n"
     "}\n";
+
 
 void TriangleWindow::initialize()
 {
@@ -129,10 +141,23 @@ void TriangleWindow::initialize()
         //255,0  ,0  ,  0,  255,0  ,  0,  0  ,255,
     };*/
     //  Copy image
-    glTexImage2D(GL_TEXTURE_2D,0,1,DX,DY,0,GL_RGB,GL_UNSIGNED_INT,publicImage);
+    //glTexImage2D(GL_TEXTURE_2D,0,1,DX,DY,0,GL_RGB,GL_UNSIGNED_INT,publicImage);
+    glTexImage2D(GL_TEXTURE_2D,0,1,256,256,0,GL_LUMINANCE,GL_FLOAT,image);
+    /*float image[16] = {
 
-    int gradloc = glGetUniformLocation(Shaders, "gradient");
-    glUniform1fv(gradloc, 256*3, gradient_array);
+        0,0,255,255,255,255,255,255,255,0,.5,1,
+        255,255,255
+
+
+        //255,0,  0,    0  ,255,0  ,  0  ,0  ,255,
+        //255,255,255,  0  ,0  ,0  ,  255,255,255,
+        //255,0  ,0  ,  0,  255,0  ,  0,  0  ,255,
+    };*/
+    //  Copy image
+    //glTexImage2D(GL_TEXTURE_2D,0,1,4,4,0,GL_LUMINANCE,GL_FLOAT,image);
+
+    //int gradloc = glGetUniformLocation(Shaders, "gradient");
+    //glUniform1fv(gradloc, 256*3, gradient_array);
 
     //  Scale linearly when image size doesn't match
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
@@ -165,12 +190,12 @@ void TriangleWindow::render()
     };
 
     GLfloat textureCoords[] = {
-        0.0f, 1.0f,
         0.0f, 0.0f,
-        1.0f, 1.0f,
+        0.0f, 1.0f,
         1.0f, 0.0f,
         1.0f, 1.0f,
-        0.0f, 0.0f,
+        1.0f, 0.0f,
+        0.0f, 1.0f,
     };
 
     m_program->setUniformValue(m_textureUniform, 0);
