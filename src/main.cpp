@@ -74,7 +74,8 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    QString filename = QFileDialog::getOpenFileName(0, "Select a file to open...", QDir::homePath());
+    //  Throws warnings in Windows 10
+    QString filename = QFileDialog::getOpenFileName(0, "Select file");//, QDir::homePath());
 
     Image testFile(filename.toUtf8().data());
 
