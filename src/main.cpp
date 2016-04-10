@@ -76,22 +76,12 @@ int main(int argc, char **argv)
 
     QString filename = QFileDialog::getOpenFileName(0, "Select a file to open...", QDir::homePath());
 
-    //Alex Filename
-    char* filename = "C:/Users/Alexander/Documents/BinaryVisualization/testfiles/bird.wav";
-
-    //Izaak Filename
-    //char filename[] = "/Users/izaakweiss/Desktop/BinaryVisualization/sprint_demo.pptx";
-
-    //Read in file
-
-    printf("BEGAN PROGRAM");
-    fflush(stdout);
-    Image WAV(filename);
+    Image testFile(filename.toUtf8().data());
 
 
     //Choose a normalization
     //linearNormalize(buffer, image,200);
-    WAV.getLogNormalizedBuffer(image);
+    testFile.getLogNormalizedBuffer(image);
     //powNormalize(buffer, image,0.13);
 
     //Gradient Stuff
