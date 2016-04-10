@@ -11,18 +11,20 @@
 #include <QGridLayout>
 #include <QtWidgets>
 
+#include <QFileDialog>
+
 #include <QtCore/qmath.h>
 
 #include <string.h>
 
 float image[256*256];
-float gradient_array[256*3];
+GLfloat grad_image[256*3];
 
 std::string red2green =
     "\"RedtoGreen\"\n"
     "usehsv\n"
-    "0.0->#FF0000\n"
-    "1.0->#00FF00\n";
+    "0.0->#00FF00\n"
+    "1.0->#FF0000\n";
 
 static const char *vertexShaderSource =
     "attribute highp vec4 posAttr;\n"
@@ -38,7 +40,13 @@ static const char *fragmentShaderSource =
     "uniform lowp sampler2D tex;\n"
     "uniform float gradient[256*3];\n"
     "void main() {\n"
-    "   gl_FragColor = texture2D(tex, texCoord);\n"
+    "   vec4 color = texture2D(tex,texCoord);\n"
+    "   int index = int(floor(color.r*255.0));\n"
+    "   vec4 newcolor;\n"
+    "   newcolor.r = gradient[index*3];\n"
+    "   newcolor.g = gradient[(index*3)+1];\n"
+    "   newcolor.b = gradient[(index*3)+2];\n"
+    "   gl_FragColor = color;\n"
     "}\n";
 
 class TriangleWindow : public OpenGLWindow
@@ -53,6 +61,7 @@ private:
     GLuint m_posAttr;
     GLuint m_texAttr;
     GLuint m_textureUniform;
+    GLuint m_gradientUniform;
 
 
     QOpenGLShaderProgram *m_program;
@@ -65,20 +74,27 @@ int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
+    QString filename = QFileDialog::getOpenFileName(0, "Select a file to open...", QDir::homePath());
+
     //Alex Filename
     //char* filename = "C:/Users/Alexander/Documents/BinaryVisualization/testfiles/bird.wav";
 
     //Izaak Filename
-    char filename[] = "/Users/izaakweiss/Desktop/BinaryVisualization/sprint_demo.pptx";
+    //char filename[] = "/Users/izaakweiss/Desktop/BinaryVisualization/sprint_demo.pptx";
 
     //Read in file
     unsigned int buffer[256*256];
-    readfile(filename, buffer);
+    readfile(filename.toUtf8().data(), buffer);
+
+    //Combine two files?
+    //addTwoImages(buffer1, buffer2, buffer3);
 
     //Choose a normalization
     //linearNormalize(buffer, image,200);
     logNormalize(buffer, image);
     //powNormalize(buffer, image,0.13);
+
+    //Gradient Stuff
 
     //Display our image
     TriangleWindow window;
@@ -112,6 +128,7 @@ void TriangleWindow::initialize()
     m_posAttr = m_program->attributeLocation("posAttr");
     m_texAttr = m_program->attributeLocation("texAttr");
     m_textureUniform = m_program->uniformLocation("tex");
+    m_gradientUniform = m_program->uniformLocation("gradient");
 
     GLuint texture;
     glGenTextures(1,&texture);
@@ -150,6 +167,8 @@ void TriangleWindow::render()
         1.0f, 0.0f,
         0.0f, 1.0f,
     };
+    m_program->bind();
+    m_program->setUniformValueArray(m_gradientUniform,grad_image,256*3,1);
 
     m_program->setUniformValue(m_textureUniform, 0);
     glVertexAttribPointer(m_posAttr, 2, GL_FLOAT, GL_FALSE, 0, vertices);

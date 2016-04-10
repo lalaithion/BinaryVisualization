@@ -13,10 +13,13 @@
 #define E_CONST 2.718281828459045235360287471352
 
 int readfile(char* filename, unsigned int* image);
+
 int getMax(unsigned int* image);
+
 void linearNormalize(unsigned int* image, float* normalized, float scale = 1);
 void powNormalize(unsigned int* image, float* normalized, float exponent = 0.5);
 void logNormalize(unsigned int* image, float* normalized, float base = E_CONST);
+
 
 
 /*using namespace std;
