@@ -1,5 +1,5 @@
 #include "openglwindow.h"
-#include "readfile.h"
+#include "image.h"
 #include "gradient.h"
 
 #include <QtGui/QGuiApplication>
@@ -66,18 +66,20 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
 
     //Alex Filename
-    //char* filename = "C:/Users/Alexander/Documents/BinaryVisualization/testfiles/bird.wav";
+    char* filename = "C:/Users/Alexander/Documents/BinaryVisualization/testfiles/bird.wav";
 
     //Izaak Filename
-    char filename[] = "/Users/izaakweiss/Desktop/BinaryVisualization/sprint_demo.pptx";
+    //char filename[] = "/Users/izaakweiss/Desktop/BinaryVisualization/sprint_demo.pptx";
 
     //Read in file
-    unsigned int buffer[256*256];
-    readfile(filename, buffer);
+    //unsigned int buffer[256*256];
+    printf("BEGAN PROGRAM");
+    fflush(stdout);
+    Image WAV(filename);
 
     //Choose a normalization
     //linearNormalize(buffer, image,200);
-    logNormalize(buffer, image);
+    WAV.getLogNormalizedBuffer(image);
     //powNormalize(buffer, image,0.13);
 
     //Display our image

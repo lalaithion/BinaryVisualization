@@ -14,15 +14,15 @@ TEMPLATE = app
 
 SOURCES +=\
     OpenGLWindow.cpp \
-    readfile.cpp \
     main.cpp \
     gradient.cpp \
-    interpolate.cpp
+    interpolate.cpp \
+    image.cpp
 
 HEADERS  += \
     OpenGLWindow.h \
-    readfile.h \
     gradient.h \
-    interpolate.h
+    interpolate.h \
+    image.h
 
 FORMS    += mainwindow.ui
