@@ -17,18 +17,12 @@ Gradient::Gradient(std::string gradient)
 	polar = true;
     while(getline(stream,line))
     {
-        //stripped = line;
-        std::cout << "This is a test!" << '\n';
-        //stripped.erase(std::remove_if(stripped.begin(), stripped.end(), isspace), stripped.end());
-        std::cout << "Izaak needs to hire higher quality strippers\n";
         if(line[0] == '"')
 		{
-            std::cout << "ParseName!\n";
 			name = parseName(line);
 		}
         else if(line[0] == 'u')
 		{
-            std::cout << "Polar something!\n";
 			polar = parseSettings(line);
 		}
         else if(line[0] == '/')
@@ -41,10 +35,8 @@ Gradient::Gradient(std::string gradient)
 		}
 		else
 		{
-            std::cout << "Well, there's always the color curve\n";
 			colorCurve.push_back(parseData(line));
 		}
-        std::cout <<"Line ended!\n";
     }
     std::sort(colorCurve.begin(),colorCurve.end(),pointSort);\
 }
@@ -118,7 +110,7 @@ point Gradient::parseData(std::string line)
 	int delPos = line.find(delimiter);
 	std::string locStr = line.substr(0,delPos);
 	double location = parseLoc(locStr);
-	int comPos = line.find(comment);
+    size_t comPos = line.find(comment);
 	std::string colStr;
 	if(comPos == std::string::npos)
 	{
