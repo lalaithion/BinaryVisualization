@@ -18,36 +18,32 @@
 #include <string.h>
 
 float image[256*256];
-GLfloat grad_image[256*3];
+float grad_image[256*3];
 
 std::string red2green =
-    "\"RedtoGreen\"\n"
-    "usehsv\n"
-    "0.0->#00FF00\n"
-    "1.0->#FF0000\n";
+        "\"RedtoGreen\"\n"
+        "usehsv\n"
+        "0.0->#FF0000\n"
+        "1.0->#00FF00\n";
 
 static const char *vertexShaderSource =
-    "attribute highp vec4 posAttr;\n"
-    "attribute highp vec4 texAttr;\n"
-    "varying lowp vec2 texCoord;\n"
-    "void main() {\n"
-    "   texCoord = texAttr.xy;\n"
-    "   gl_Position = posAttr;\n"
-    "}\n";
+        "attribute highp vec4 posAttr;\n"
+        "attribute highp vec4 texAttr;\n"
+        "varying lowp vec2 texCoord;\n"
+        "void main() {\n"
+        "   texCoord = texAttr.xy;\n"
+        "   gl_Position = posAttr;\n"
+        "}\n";
 
 static const char *fragmentShaderSource =
-    "varying lowp vec2 texCoord;\n"
-    "uniform lowp sampler2D tex;\n"
-    "uniform float gradient[256*3];\n"
-    "void main() {\n"
-    "   vec4 color = texture2D(tex,texCoord);\n"
-    "   int index = int(floor(color.r*255.0));\n"
-    "   vec4 newcolor;\n"
-    "   newcolor.r = gradient[index*3];\n"
-    "   newcolor.g = gradient[(index*3)+1];\n"
-    "   newcolor.b = gradient[(index*3)+2];\n"
-    "   gl_FragColor = color;\n"
-    "}\n";
+        "varying lowp vec2 texCoord;\n"
+        "uniform lowp sampler2D tex;\n"
+        "uniform lowp sampler1D grad;\n"
+        "void main() {\n"
+        "   vec4 color = texture2D(tex,texCoord);\n"
+        "   vec4 newcolor = texture1D(grad, color.r);\n"
+        "   gl_FragColor = color;\n"
+        "}\n";
 
 class TriangleWindow : public OpenGLWindow
 {
@@ -75,15 +71,13 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
 
     //  Throws warnings in Windows 10
+
     QString filename = QFileDialog::getOpenFileName(0, "Select file");//, QDir::homePath());
 
     Image testFile(filename.toUtf8().data());
 
-
     //Choose a normalization
-    //linearNormalize(buffer, image,200);
     testFile.getLogNormalizedBuffer(image);
-    //powNormalize(buffer, image,0.13);
 
     //Gradient Stuff
 
@@ -92,7 +86,7 @@ int main(int argc, char **argv)
     window.resize(640, 480);
     window.show();
 
-    return app.exec();
+    app.exec();
 }
 
 TriangleWindow::TriangleWindow()
@@ -122,6 +116,7 @@ void TriangleWindow::initialize()
     m_gradientUniform = m_program->uniformLocation("gradient");
 
     GLuint texture;
+    glActiveTexture(GL_TEXTURE0);
     glGenTextures(1,&texture);
 
     //  Bind texture (state change - all texture calls now refer to this one specifically)
@@ -130,6 +125,17 @@ void TriangleWindow::initialize()
 
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+
+    GLuint texture2;
+    glActiveTexture(GL_TEXTURE1);
+    glGenTextures(1,&texture2);
+
+    //  Bind texture (state change - all texture calls now refer to this one specifically)
+    glBindTexture(GL_TEXTURE_1D,texture2);
+    glTexImage1D(GL_TEXTURE_1D,0,3,256,0,GL_RGB,GL_FLOAT,grad_image);
+
+    glTexParameteri(GL_TEXTURE_1D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_1D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 }
 
 void TriangleWindow::render()
@@ -159,9 +165,9 @@ void TriangleWindow::render()
         0.0f, 1.0f,
     };
     m_program->bind();
-    m_program->setUniformValueArray(m_gradientUniform,grad_image,256*3,1);
 
     m_program->setUniformValue(m_textureUniform, 0);
+    m_program->setUniformValue(m_gradientUniform, 1);
     glVertexAttribPointer(m_posAttr, 2, GL_FLOAT, GL_FALSE, 0, vertices);
     glVertexAttribPointer(m_texAttr, 2, GL_FLOAT, GL_FALSE, 0, textureCoords);
 

@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define FILE_BUFFER_SIZE 32
+#define FILE_BUFFER_SIZE 1024
 #define IMAGE_BUFFER_SIZE 256
 #define E_CONST 2.718281828459045235360287471352
 
