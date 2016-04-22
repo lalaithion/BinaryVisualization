@@ -20,10 +20,19 @@
 float image[256*256];
 float grad_image[256*3];
 
+std::string rainbow =
+        "\"Rainbow\"\n"
+        "usehsv\n"
+        "0.0->#000000\n"
+        "0.25->#000099\n"
+        "0.5->#009900\n"
+        "0.75->#EE0000\n"
+        "1.0->#FFFFFF\n";
+
 std::string red2green =
         "\"RedtoGreen\"\n"
         "usehsv\n"
-        "0.0->#FF0000\n"
+        "0.0->#000001\n"
         "1.0->#00FF00\n";
 
 static const char *vertexShaderSource =
@@ -42,7 +51,7 @@ static const char *fragmentShaderSource =
         "void main() {\n"
         "   vec4 color = texture2D(tex,texCoord);\n"
         "   vec4 newcolor = texture1D(grad, color.r);\n"
-        "   gl_FragColor = color;\n"
+        "   gl_FragColor = vec4(newcolor.r, newcolor.b, newcolor.g, 1.0);\n"
         "}\n";
 
 class TriangleWindow : public OpenGLWindow
@@ -76,6 +85,9 @@ int main(int argc, char **argv)
 
     Image testFile(filename.toUtf8().data());
 
+    Gradient gradient(rainbow);
+    gradient.getTexture(grad_image);
+
     //Choose a normalization
     testFile.getLogNormalizedBuffer(image);
 
@@ -83,7 +95,7 @@ int main(int argc, char **argv)
 
     //Display our image
     TriangleWindow window;
-    window.resize(640, 480);
+    window.resize(640, 640);
     window.show();
 
     app.exec();
@@ -113,7 +125,7 @@ void TriangleWindow::initialize()
     m_posAttr = m_program->attributeLocation("posAttr");
     m_texAttr = m_program->attributeLocation("texAttr");
     m_textureUniform = m_program->uniformLocation("tex");
-    m_gradientUniform = m_program->uniformLocation("gradient");
+    m_gradientUniform = m_program->uniformLocation("grad");
 
     GLuint texture;
     glActiveTexture(GL_TEXTURE0);
@@ -126,12 +138,12 @@ void TriangleWindow::initialize()
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 
-    GLuint texture2;
+    GLuint gradient;
     glActiveTexture(GL_TEXTURE1);
-    glGenTextures(1,&texture2);
+    glGenTextures(1,&gradient);
 
     //  Bind texture (state change - all texture calls now refer to this one specifically)
-    glBindTexture(GL_TEXTURE_1D,texture2);
+    glBindTexture(GL_TEXTURE_1D,gradient);
     glTexImage1D(GL_TEXTURE_1D,0,3,256,0,GL_RGB,GL_FLOAT,grad_image);
 
     glTexParameteri(GL_TEXTURE_1D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
@@ -168,6 +180,7 @@ void TriangleWindow::render()
 
     m_program->setUniformValue(m_textureUniform, 0);
     m_program->setUniformValue(m_gradientUniform, 1);
+
     glVertexAttribPointer(m_posAttr, 2, GL_FLOAT, GL_FALSE, 0, vertices);
     glVertexAttribPointer(m_texAttr, 2, GL_FLOAT, GL_FALSE, 0, textureCoords);
 

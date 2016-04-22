@@ -76,7 +76,12 @@ void Image::getLogNormalizedBuffer(float* normalized, float base) {
     float max = log((float)getMax())/log(base);
     for(int i = 0; i < IMAGE_BUFFER_SIZE*IMAGE_BUFFER_SIZE; i++)
     {
-        normalized[i] = log(imageBuffer[i])/(scale*max);
+        if(imageBuffer[i]==0) {
+            normalized[i] = 0;
+        }
+        else {
+            normalized[i] = log(imageBuffer[i])/(scale*max);
+        }
     }
 }
 
