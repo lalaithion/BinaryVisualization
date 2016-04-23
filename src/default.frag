@@ -17,7 +17,7 @@ void main()
 
    float frequency = texture2D(texture, fragment_texture_coordinates).r;
    //vec4  grad = texture1D(gradient, frequency);
-   gl_FragColor = vec4(gradient[int(frequency * 256)], 1.0);
+   gl_FragColor = vec4(gradient[int(frequency * 256.0)], 1.0);
    //Fragcolor = vec4(gradient[int(frequency * 256)], 1.0);
    //else
 

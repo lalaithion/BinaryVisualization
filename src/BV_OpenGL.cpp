@@ -82,17 +82,11 @@ const float plane_data[] =  // Vertex data
 std::string rainbow =
         "\"Rainbow\"\n"
         "usehsv\n"
-        "0.0->#000000\n"
+        "0.0->#000001\n"
         "0.25->#000099\n"
         "0.5->#009900\n"
         "0.75->#EE0000\n"
         "1.0->#FFFFFF\n";
-
-std::string red2green =
-        "\"RedtoGreen\"\n"
-        "usehsv\n"
-        "0.0->#000001\n"
-        "1.0->#00FF00\n";
 
 //
 //  Initialize
@@ -115,10 +109,10 @@ void BV_OpenGL::initializeGL()
    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 
    float grad_image[256*3];
-   Gradient r(red2green);
+   Gradient r(rainbow);
    r.getTexture(grad_image);
    for (int k = 0; k < 256; k++) {
-        gradient[k] = QVector3D(grad_image[k*3+2], grad_image[k*3+1], grad_image[k*3]);
+        gradient[k] = QVector3D(grad_image[k*3], grad_image[k*3+2], grad_image[k*3+1]);
    }
    /*
    glGenTextures(1,&gradient);
@@ -224,7 +218,7 @@ void BV_OpenGL::paintGL()
    shader.release();
    
    //  Emit angles to display
-   emit test_label(QString::number(th)+","+QString::number(ph));
+   emit test_label(QString::number(th));
    //  Emit light angle
    //emit light((int)zh);
 }

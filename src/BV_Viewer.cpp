@@ -35,7 +35,8 @@ BV_Viewer::BV_Viewer()
 
    //  Set layout of child widgets
    QGridLayout* layout = new QGridLayout;
-   layout->addWidget(ogl,0,0,8,1);
+   layout->setContentsMargins(0,0,0,0);
+   layout->addWidget(ogl,0,0,-1,1);
    layout->addWidget(new QLabel("Test dropdown"),0,1);
    layout->addWidget(test_dropdown,0,2);
    layout->addWidget(new QLabel("Test button"),1,1);
@@ -48,7 +49,7 @@ BV_Viewer::BV_Viewer()
    layout->addWidget(quit,8,2);
    //  Manage resizing
    layout->setColumnStretch(0,100);
-   layout->setColumnMinimumWidth(0,100);
+   layout->setColumnMinimumWidth(0,800);
    layout->setRowStretch(7,100);
    setLayout(layout);
 
