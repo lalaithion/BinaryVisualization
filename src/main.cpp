@@ -29,11 +29,24 @@ std::string rainbow =
         "0.75->#EE0000\n"
         "1.0->#FFFFFF\n";
 
-std::string red2green =
-        "\"RedtoGreen\"\n"
+std::string green =
+        "\"Green\"\n"
         "usehsv\n"
         "0.0->#000001\n"
         "1.0->#00FF00\n";
+
+std::string heat =
+        "\"Heat\"\n"
+        "usehsv\n"
+        "0.0->#000001\n"
+        "0.5->#990099\n"
+        "1.0->#FFFF00\n";
+
+std::string greyscale =
+        "\"Greyscale\"\n"
+        "usehsv\n"
+        "0.0->#000000\n"
+        "1.0->#FFFFFF\n";
 
 static const char *vertexShaderSource =
         "attribute highp vec4 posAttr;\n"
@@ -52,6 +65,7 @@ static const char *fragmentShaderSource =
         "   vec4 color = texture2D(tex,texCoord);\n"
         "   vec4 newcolor = texture1D(grad, color.r);\n"
         "   gl_FragColor = vec4(newcolor.r, newcolor.b, newcolor.g, 1.0);\n"
+        "   if(color.r == 0.0) gl_FragColor = texture1D(grad, 1.0/256.0);\n"
         "}\n";
 
 class TriangleWindow : public OpenGLWindow
