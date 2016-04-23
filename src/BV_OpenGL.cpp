@@ -203,10 +203,12 @@ void BV_OpenGL::paintGL()
    cube_buffer.bind();
    //   Attribute 0: vertex coordinate (vec4) at offset 0
    shader.enableAttributeArray(0);
-   shader.setAttributeBuffer(0,GL_FLOAT,0,4,12*sizeof(float));
+   //shader.setAttributeArray(shader.attributeLocation("Vertex"));
+   //shader.setAttributeArray(shader.attributeLocation("TextureCoords"));
+   shader.setAttributeBuffer(shader.attributeLocation("Vertex"),GL_FLOAT,0,4,12*sizeof(float));
    //   Attribute 1:  vertex texture coordinates (vec2) offset 10 floats
    shader.enableAttributeArray(1);
-   shader.setAttributeBuffer(1,GL_FLOAT,10*sizeof(float),2,12*sizeof(float));
+   shader.setAttributeBuffer(shader.attributeLocation("TextureCoords"),GL_FLOAT,10*sizeof(float),2,12*sizeof(float));
 
    // Draw the plane
    glDrawArrays(GL_TRIANGLES,0,plane_size);
