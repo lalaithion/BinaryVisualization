@@ -60,7 +60,17 @@ void BV_OpenGL::set_slider(int Z)
 }
 
 void BV_OpenGL::button_pressed() {
-    std::cout<<"Beep"<<'\n';
+    float image[256*256];
+    QString filename = QFileDialog::getOpenFileName(0, "Select file");//, QDir::homePath());
+    Image testFile(filename.toUtf8().data());
+    testFile.getLogNormalizedBuffer(image);
+
+    glGenTextures(1,&texture);
+    //  Bind texture (state change - all texture calls now refer to this one specifically)
+    glBindTexture(texture,GL_TEXTURE_2D);
+    glTexImage2D(GL_TEXTURE_2D,0,1,256,256,0,GL_LUMINANCE,GL_FLOAT,image);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 }
 
 //
@@ -96,32 +106,12 @@ void BV_OpenGL::initializeGL()
    if (init) return;
    init = true;
 
-   float image[256*256];
-   QString filename = QFileDialog::getOpenFileName(0, "Select file");//, QDir::homePath());
-   Image testFile(filename.toUtf8().data());
-   testFile.getLogNormalizedBuffer(image);
-
-   glGenTextures(1,&texture);
-   //  Bind texture (state change - all texture calls now refer to this one specifically)
-   glBindTexture(texture,GL_TEXTURE_2D);
-   glTexImage2D(GL_TEXTURE_2D,0,1,256,256,0,GL_LUMINANCE,GL_FLOAT,image);
-   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-
    float grad_image[256*3];
    Gradient r(rainbow);
    r.getTexture(grad_image);
    for (int k = 0; k < 256; k++) {
         gradient[k] = QVector3D(grad_image[k*3], grad_image[k*3+2], grad_image[k*3+1]);
    }
-   /*
-   glGenTextures(1,&gradient);
-   //  Bind texture (state change - all texture calls now refer to this one specifically)
-   glBindTexture(GL_TEXTURE_1D,gradient);
-   glTexImage1D(GL_TEXTURE_1D,0,3,256,0,GL_RGB,GL_FLOAT,grad_image);
-   glTexParameteri(GL_TEXTURE_1D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-   glTexParameteri(GL_TEXTURE_1D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-   */
    //  Load shaders
    Shader(shader,":/default.vert",":/default.frag");
 
