@@ -4,6 +4,7 @@
 #include <math.h>
 #include "image.h"
 #include "gradient.h"
+#include <typeinfo>
 
 #define Cos(th) cos(M_PI/180*(th))
 #define Sin(th) sin(M_PI/180*(th))
@@ -27,6 +28,11 @@ BV_OpenGL::BV_OpenGL(QWidget* parent)
    zh = 0;
 }
 
+void BV_OpenGL::SetGradients(std::vector<Gradient> grads)
+{
+    gradls = grads;
+}
+
 //
 //  Reset view
 //
@@ -39,20 +45,6 @@ void BV_OpenGL::reset()
    updateGL();
 }
 
-std::string rainbow =
-        "\"Rainbow\"\n"
-        "usehsv\n"
-        "0.0->#000001\n"
-        "0.25->#000099\n"
-        "0.5->#009900\n"
-        "0.75->#EE0000\n"
-        "1.0->#FFFFFF\n";
-
-std::string red2green =
-        "\"Red to Green\"\n"
-        "usehsv\n"
-        "0.0->#FF0000\n"
-        "1.0->#00FF00\n";
 
 //
 //  Set shader
@@ -60,16 +52,12 @@ std::string red2green =
 void BV_OpenGL::set_dropdown(int sel)
 {
     float grad_image[256*3];
-    if (sel == 1) {
-        Gradient r(rainbow);
-        r.getTexture(grad_image);
-    } else if (sel == 2) {
-        Gradient r(red2green);
-        r.getTexture(grad_image);
-    }
+    Gradient r = gradls[sel];
+    r.getTexture(grad_image);
     for (int k = 0; k < 256; k++) {
          gradient[k] = QVector3D(grad_image[k*3], grad_image[k*3+2], grad_image[k*3+1]);
     }
+    std::cout << r.getName() << std::endl;
     mode = sel;
     //  Request redisplay
     updateGL();
@@ -136,7 +124,7 @@ void BV_OpenGL::initializeGL()
    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 
    float grad_image[256*3];
-   Gradient r(rainbow);
+   Gradient r = gradls[0];
    r.getTexture(grad_image);
    for (int k = 0; k < 256; k++) {
         gradient[k] = QVector3D(grad_image[k*3], grad_image[k*3+2], grad_image[k*3+1]);

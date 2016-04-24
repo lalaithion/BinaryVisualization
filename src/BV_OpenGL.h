@@ -5,6 +5,7 @@
 #include <QString>
 #include <QVector>
 #include <QMatrix4x4>
+#include <gradient.h>
 
 class BV_OpenGL : public QGLWidget
 {
@@ -31,9 +32,11 @@ private:
    QElapsedTimer    time;     //  Track elapsed time
    GLuint texture;
    QVector3D gradient[256];
+   std::vector<Gradient> gradls;
 public:
    BV_OpenGL(QWidget* parent=0);                  //  Constructor
    QSize sizeHint() const {return QSize(400,400);} //  Default size of widget
+   void SetGradients(std::vector<Gradient>);
 public slots:
     void set_dropdown(int sel);               //  Slot to set shader
     void set_slider(int z);                   //  Slot to light elevation (%)

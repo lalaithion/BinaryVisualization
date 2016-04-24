@@ -2,6 +2,8 @@
 #include <QLabel>
 #include <QGridLayout>
 #include "BV_Viewer.h"
+#include "colors.h"
+#include "gradient.h"
 
 //
 //  Constructor
@@ -14,11 +16,17 @@ BV_Viewer::BV_Viewer()
    //  Create new Triangle widget
    ogl = new BV_OpenGL;
 
+   for(int i = 0; i < colors.size(); i++) {
+       gradls.push_back(Gradient(colors[i]));
+   }
+
    //  Select shader
    QComboBox* test_dropdown = new QComboBox();
-   test_dropdown->addItem("Rainbow");
-   test_dropdown->addItem("Red to Green");
+   for(int i = 0; i < gradls.size(); i++) {
+       test_dropdown->addItem(QString::fromStdString(gradls[i].getName()));
+   }
 
+   ogl->SetGradients(gradls);
 
    test_slider = new QSlider(Qt::Horizontal);
    test_slider->setRange(0,360);
@@ -46,8 +54,7 @@ BV_Viewer::BV_Viewer()
    //layout->addWidget(test_slider,2,2);
    //layout->addWidget(new QLabel("Test label"),3,1);
    //layout->addWidget(test_label,3,2);
-   layout->addWidget(rst,8,1);
-   layout->addWidget(quit,8,2);
+   layout->addWidget(quit,8,1);
    //  Manage resizing
    layout->setColumnStretch(0,100);
    layout->setColumnMinimumWidth(0,800);
@@ -60,7 +67,6 @@ BV_Viewer::BV_Viewer()
    //  Connect angles() and zoom() signal to labels
    connect(ogl,           SIGNAL(test_label(QString)),      test_label, SLOT(setText(QString)));
    //  Connect reset() and test_button() signals
-   connect(rst,           SIGNAL(pressed()),                ogl,        SLOT(reset()));
    connect(test_button,   SIGNAL(pressed()),                ogl,        SLOT(button_pressed()));
    //  Connect quit() signal to qApp::quit()
    connect(quit,          SIGNAL(pressed()),                qApp,       SLOT(quit()));
