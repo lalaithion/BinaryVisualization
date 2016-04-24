@@ -16,8 +16,9 @@ BV_Viewer::BV_Viewer()
 
    //  Select shader
    QComboBox* test_dropdown = new QComboBox();
-   test_dropdown->addItem("Fixed Pipeline");
-   test_dropdown->addItem("Programmable Pipeline");
+   test_dropdown->addItem("Rainbow");
+   test_dropdown->addItem("Red to Green");
+
 
    test_slider = new QSlider(Qt::Horizontal);
    test_slider->setRange(0,360);
@@ -26,7 +27,7 @@ BV_Viewer::BV_Viewer()
    QLabel* test_label = new QLabel();
 
    //  Pause/resume button
-   test_button = new QPushButton("Test");
+   test_button = new QPushButton("Load");
 
    //  Reset
    QPushButton* rst = new QPushButton("Reset");
@@ -37,14 +38,14 @@ BV_Viewer::BV_Viewer()
    QGridLayout* layout = new QGridLayout;
    layout->setContentsMargins(0,0,0,0);
    layout->addWidget(ogl,0,0,-1,1);
-   layout->addWidget(new QLabel("Test dropdown"),0,1);
-   layout->addWidget(test_dropdown,0,2);
-   layout->addWidget(new QLabel("Test button"),1,1);
-   layout->addWidget(test_button,1,2);
-   layout->addWidget(new QLabel("Test slider"),2,1);
-   layout->addWidget(test_slider,2,2);
-   layout->addWidget(new QLabel("Test label"),3,1);
-   layout->addWidget(test_label,3,2);
+   layout->addWidget(new QLabel("Load"),0,1);
+   layout->addWidget(test_button,0,2);
+   layout->addWidget(new QLabel("Color"),1,1);
+   layout->addWidget(test_dropdown,1,2);
+   //layout->addWidget(new QLabel("Test slider"),2,1);
+   //layout->addWidget(test_slider,2,2);
+   //layout->addWidget(new QLabel("Test label"),3,1);
+   //layout->addWidget(test_label,3,2);
    layout->addWidget(rst,8,1);
    layout->addWidget(quit,8,2);
    //  Manage resizing

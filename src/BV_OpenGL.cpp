@@ -39,14 +39,40 @@ void BV_OpenGL::reset()
    updateGL();
 }
 
+std::string rainbow =
+        "\"Rainbow\"\n"
+        "usehsv\n"
+        "0.0->#000001\n"
+        "0.25->#000099\n"
+        "0.5->#009900\n"
+        "0.75->#EE0000\n"
+        "1.0->#FFFFFF\n";
+
+std::string red2green =
+        "\"Red to Green\"\n"
+        "usehsv\n"
+        "0.0->#FF0000\n"
+        "1.0->#00FF00\n";
+
 //
 //  Set shader
 //
 void BV_OpenGL::set_dropdown(int sel)
 {
-   mode = sel;
-   //  Request redisplay
-   updateGL();
+    float grad_image[256*3];
+    if (sel == 1) {
+        Gradient r(rainbow);
+        r.getTexture(grad_image);
+    } else if (sel == 2) {
+        Gradient r(red2green);
+        r.getTexture(grad_image);
+    }
+    for (int k = 0; k < 256; k++) {
+         gradient[k] = QVector3D(grad_image[k*3], grad_image[k*3+2], grad_image[k*3+1]);
+    }
+    mode = sel;
+    //  Request redisplay
+    updateGL();
 }
 
 //
@@ -65,7 +91,7 @@ void BV_OpenGL::button_pressed() {
     Image testFile(filename.toUtf8().data());
     testFile.getLogNormalizedBuffer(image);
 
-    glGenTextures(1,&texture);
+    //glGenTextures(1,&texture);
     //  Bind texture (state change - all texture calls now refer to this one specifically)
     glBindTexture(texture,GL_TEXTURE_2D);
     glTexImage2D(GL_TEXTURE_2D,0,1,256,256,0,GL_LUMINANCE,GL_FLOAT,image);
@@ -89,15 +115,6 @@ const float plane_data[] =  // Vertex data
    -1,-1,0,+1,   0, 0,+1,   1,0,0,  0,0,
 };
 
-std::string rainbow =
-        "\"Rainbow\"\n"
-        "usehsv\n"
-        "0.0->#000001\n"
-        "0.25->#000099\n"
-        "0.5->#009900\n"
-        "0.75->#EE0000\n"
-        "1.0->#FFFFFF\n";
-
 //
 //  Initialize
 //
@@ -105,6 +122,18 @@ void BV_OpenGL::initializeGL()
 {
    if (init) return;
    init = true;
+
+   float image[256*256];
+   QString filename = QFileDialog::getOpenFileName(0, "Select file");//, QDir::homePath());
+   Image testFile(filename.toUtf8().data());
+   testFile.getLogNormalizedBuffer(image);
+
+   glGenTextures(1,&texture);
+   //  Bind texture (state change - all texture calls now refer to this one specifically)
+   glBindTexture(texture,GL_TEXTURE_2D);
+   glTexImage2D(GL_TEXTURE_2D,0,1,256,256,0,GL_LUMINANCE,GL_FLOAT,image);
+   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 
    float grad_image[256*3];
    Gradient r(rainbow);
@@ -163,16 +192,16 @@ void BV_OpenGL::paintGL()
    glLoadIdentity();
    if (fov) glTranslated(0,0,-2*dim);
 
-   glRotated(ph,1,0,0);
-   glRotated(th,0,1,0);
+   //glRotated(ph,1,0,0);
+   //glRotated(th,0,1,0);
 
    //  Create Modelview matrix
 
    QMatrix4x4 mv;
    if (fov) mv.translate(0,0,-2*dim);
 
-   mv.rotate(ph,1,0,0);
-   mv.rotate(th,0,1,0);
+   //mv.rotate(ph,1,0,0);
+   //mv.rotate(th,0,1,0);
 
 
    // Enable shader
