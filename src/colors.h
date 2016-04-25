@@ -1,9 +1,9 @@
 #ifndef COLORS_H
 #define COLORS_H
 
-//
-// This file contains the gradient shaders that are loaded by BV_Viewer and passed to the fragment shader to color the image
-//
+/*
+ * This file contains the gradient shaders that are loaded by BV_Viewer and passed to the fragment shader to color the image
+ */
 
 extern std::string rainbow =
         "\"Rainbow\"\n"
