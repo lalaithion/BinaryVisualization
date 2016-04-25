@@ -14,44 +14,44 @@ Inherits Q\-G\-L\-Widget.
 void {\bf set\-\_\-dropdown} (int sel)
 \begin{DoxyCompactList}\small\item\em Set shader. \end{DoxyCompactList}\item 
 void {\bf set\-\_\-slider} (int z)
-\begin{DoxyCompactList}\small\item\em Set light elevation. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Slot to set shader. \end{DoxyCompactList}\item 
 void {\bf button\-\_\-pressed} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Slot to light elevation (\%) \end{DoxyCompactList}\item 
 void {\bf reset} ()
-\begin{DoxyCompactList}\small\item\em Reset view. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Slot to set light movement. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Signals}
 \begin{DoxyCompactItemize}
 \item 
 void {\bf label} (Q\-String text)
-\item 
+\begin{DoxyCompactList}\small\item\em Reset view. \end{DoxyCompactList}\item 
 void {\bf light} (int)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Signal for view angles. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 {\bf B\-V\-\_\-\-Open\-G\-L} (Q\-Widget $\ast$parent=0)
 \begin{DoxyCompactList}\small\item\em Constructor with default settings. \end{DoxyCompactList}\item 
 Q\-Size {\bf size\-Hint} () const 
-\item 
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
 void {\bf Set\-Gradients} (std\-::vector$<$ Gradient $>$)
-\begin{DoxyCompactList}\small\item\em This function sets the vector of gradients to the value passed in. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Default size of widget. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 void {\bf initialize\-G\-L} ()
-\begin{DoxyCompactList}\small\item\em Initialize. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Light position. \end{DoxyCompactList}\item 
 void {\bf resize\-G\-L} (int width, int height)
-\begin{DoxyCompactList}\small\item\em Set projection when window is resized. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Initialize widget. \end{DoxyCompactList}\item 
 void {\bf paint\-G\-L} ()
-\begin{DoxyCompactList}\small\item\em Draw the window. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Resize widget. \end{DoxyCompactList}\item 
 void {\bf mouse\-Press\-Event} (Q\-Mouse\-Event $\ast$)
-\item 
+\begin{DoxyCompactList}\small\item\em Draw widget. \end{DoxyCompactList}\item 
 void {\bf mouse\-Release\-Event} (Q\-Mouse\-Event $\ast$)
-\item 
+\begin{DoxyCompactList}\small\item\em Mouse pressed. \end{DoxyCompactList}\item 
 void {\bf mouse\-Move\-Event} (Q\-Mouse\-Event $\ast$)
-\item 
+\begin{DoxyCompactList}\small\item\em Mouse released. \end{DoxyCompactList}\item 
 void {\bf wheel\-Event} (Q\-Wheel\-Event $\ast$)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Mouse moved. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Constructor \& Destructor Documentation}
@@ -76,6 +76,10 @@ Constructor with default settings.
 {}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [slot]}}\label{class_b_v___open_g_l_a403be8a59ac1c05b8bf5fabda458d498}
+
+
+Slot to light elevation (\%) 
+
 initialize array
 
 get filename with dialog
@@ -89,9 +93,9 @@ get image from \doxyref{Image}{p.}{class_image} object using a logarithmic norma
 )\hspace{0.3cm}{\ttfamily [protected]}}\label{class_b_v___open_g_l_adff72add88202a3d9390fcecde53b483}
 
 
-Initialize. 
+Light position. 
 
-Load shaders
+Initialize. Load shaders
 
 Start 100 fps timer connected to update\-G\-L
 
@@ -104,6 +108,10 @@ Unbind this buffer \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!label@
 \item[{Q\-String}]{text}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [signal]}}\label{class_b_v___open_g_l_a9c88d8231c6319e94f4972e03b255c29}
+
+
+Reset view. 
+
 \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!light@{light}}
 \index{light@{light}!BV_OpenGL@{B\-V\-\_\-\-Open\-G\-L}}
 \subsubsection[{light}]{\setlength{\rightskip}{0pt plus 5cm}void B\-V\-\_\-\-Open\-G\-L\-::light (
@@ -111,6 +119,10 @@ Unbind this buffer \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!label@
 \item[{int}]{}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [signal]}}\label{class_b_v___open_g_l_a4794a4df39a377733e5d53256ecec99c}
+
+
+Signal for view angles. 
+
 \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!mouse\-Move\-Event@{mouse\-Move\-Event}}
 \index{mouse\-Move\-Event@{mouse\-Move\-Event}!BV_OpenGL@{B\-V\-\_\-\-Open\-G\-L}}
 \subsubsection[{mouse\-Move\-Event}]{\setlength{\rightskip}{0pt plus 5cm}void B\-V\-\_\-\-Open\-G\-L\-::mouse\-Move\-Event (
@@ -118,6 +130,10 @@ Unbind this buffer \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!label@
 \item[{Q\-Mouse\-Event $\ast$}]{e}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [protected]}}\label{class_b_v___open_g_l_a6e3f8704a0bf5d3b97331f43500a96ee}
+
+
+Mouse released. 
+
 \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!mouse\-Press\-Event@{mouse\-Press\-Event}}
 \index{mouse\-Press\-Event@{mouse\-Press\-Event}!BV_OpenGL@{B\-V\-\_\-\-Open\-G\-L}}
 \subsubsection[{mouse\-Press\-Event}]{\setlength{\rightskip}{0pt plus 5cm}void B\-V\-\_\-\-Open\-G\-L\-::mouse\-Press\-Event (
@@ -125,6 +141,10 @@ Unbind this buffer \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!label@
 \item[{Q\-Mouse\-Event $\ast$}]{e}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [protected]}}\label{class_b_v___open_g_l_a2dc68fc5223cc3d7b9e6214811551416}
+
+
+Draw widget. 
+
 \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!mouse\-Release\-Event@{mouse\-Release\-Event}}
 \index{mouse\-Release\-Event@{mouse\-Release\-Event}!BV_OpenGL@{B\-V\-\_\-\-Open\-G\-L}}
 \subsubsection[{mouse\-Release\-Event}]{\setlength{\rightskip}{0pt plus 5cm}void B\-V\-\_\-\-Open\-G\-L\-::mouse\-Release\-Event (
@@ -132,6 +152,10 @@ Unbind this buffer \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!label@
 \item[{Q\-Mouse\-Event $\ast$}]{}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [protected]}}\label{class_b_v___open_g_l_ab56c83380b1fe2d2b3014f3c1e195821}
+
+
+Mouse pressed. 
+
 \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!paint\-G\-L@{paint\-G\-L}}
 \index{paint\-G\-L@{paint\-G\-L}!BV_OpenGL@{B\-V\-\_\-\-Open\-G\-L}}
 \subsubsection[{paint\-G\-L}]{\setlength{\rightskip}{0pt plus 5cm}void B\-V\-\_\-\-Open\-G\-L\-::paint\-G\-L (
@@ -141,9 +165,9 @@ Unbind this buffer \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!label@
 )\hspace{0.3cm}{\ttfamily [protected]}}\label{class_b_v___open_g_l_aa92d8b231ddd7d504d8c66cb47efae46}
 
 
-Draw the window. 
+Resize widget. 
 
-Wall time (seconds)
+Draw the window. Wall time (seconds)
 
 Clear screen and Z-\/buffer
 
@@ -176,9 +200,9 @@ Emit light angle \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!reset@{r
 )\hspace{0.3cm}{\ttfamily [slot]}}\label{class_b_v___open_g_l_a2599dcf6ceceef36b32dbc0ff0b2b9ce}
 
 
-Reset view. 
+Slot to set light movement. 
 
-Request redisplay \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!resize\-G\-L@{resize\-G\-L}}
+Reset view. Request redisplay \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!resize\-G\-L@{resize\-G\-L}}
 \index{resize\-G\-L@{resize\-G\-L}!BV_OpenGL@{B\-V\-\_\-\-Open\-G\-L}}
 \subsubsection[{resize\-G\-L}]{\setlength{\rightskip}{0pt plus 5cm}void B\-V\-\_\-\-Open\-G\-L\-::resize\-G\-L (
 \begin{DoxyParamCaption}
@@ -188,9 +212,9 @@ Request redisplay \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!resize\
 )\hspace{0.3cm}{\ttfamily [protected]}}\label{class_b_v___open_g_l_a41ac260a13b3f1aaaf84460fedc33360}
 
 
-Set projection when window is resized. 
+Initialize widget. 
 
-Window aspect ration
+Set projection when window is resized. Window aspect ration
 
 Viewport is whole screen
 
@@ -222,9 +246,9 @@ Request redisplay \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!set\-\_
 )\hspace{0.3cm}{\ttfamily [slot]}}\label{class_b_v___open_g_l_a536203822cda704af997a2a096336746}
 
 
-Set light elevation. 
+Slot to set shader. 
 
-Request redisplay \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!Set\-Gradients@{Set\-Gradients}}
+Set light elevation. Request redisplay \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!Set\-Gradients@{Set\-Gradients}}
 \index{Set\-Gradients@{Set\-Gradients}!BV_OpenGL@{B\-V\-\_\-\-Open\-G\-L}}
 \subsubsection[{Set\-Gradients}]{\setlength{\rightskip}{0pt plus 5cm}void B\-V\-\_\-\-Open\-G\-L\-::\-Set\-Gradients (
 \begin{DoxyParamCaption}
@@ -233,15 +257,19 @@ Request redisplay \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!Set\-Gr
 )}\label{class_b_v___open_g_l_a85476e5a04af95ce2ccfa3364f4d1ca4}
 
 
-This function sets the vector of gradients to the value passed in. 
+Default size of widget. 
 
-\index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!size\-Hint@{size\-Hint}}
+This function sets the vector of gradients to the value passed in. \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!size\-Hint@{size\-Hint}}
 \index{size\-Hint@{size\-Hint}!BV_OpenGL@{B\-V\-\_\-\-Open\-G\-L}}
 \subsubsection[{size\-Hint}]{\setlength{\rightskip}{0pt plus 5cm}Q\-Size B\-V\-\_\-\-Open\-G\-L\-::size\-Hint (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
 ) const\hspace{0.3cm}{\ttfamily [inline]}}\label{class_b_v___open_g_l_a44555ea9ecb9f526288f3ecb0d444c89}
+
+
+Constructor. 
+
 \index{B\-V\-\_\-\-Open\-G\-L@{B\-V\-\_\-\-Open\-G\-L}!wheel\-Event@{wheel\-Event}}
 \index{wheel\-Event@{wheel\-Event}!BV_OpenGL@{B\-V\-\_\-\-Open\-G\-L}}
 \subsubsection[{wheel\-Event}]{\setlength{\rightskip}{0pt plus 5cm}void B\-V\-\_\-\-Open\-G\-L\-::wheel\-Event (
@@ -249,6 +277,10 @@ This function sets the vector of gradients to the value passed in.
 \item[{Q\-Wheel\-Event $\ast$}]{e}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [protected]}}\label{class_b_v___open_g_l_aefa3eef2ab0978ba8507780bc3cd125f}
+
+
+Mouse moved. 
+
 
 
 The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}

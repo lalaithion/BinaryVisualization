@@ -1,7 +1,7 @@
 #ifndef COLORS_H
 #define COLORS_H
 
-/*
+/**
  * This file contains the gradient shaders that are loaded by BV_Viewer and passed to the fragment shader to color the image
  */
 
@@ -36,4 +36,4 @@ extern std::string grayscale =
 
 extern std::vector<std::string> colors = {heatmap, rainbow, green, grayscale};
 
-#endif // COLORS_H
+#endif /// COLORS_H
