@@ -1,0 +1,67 @@
+\section{B\-V\-\_\-\-Open\-G\-L.\-cpp File Reference}
+\label{_b_v___open_g_l_8cpp}\index{B\-V\-\_\-\-Open\-G\-L.\-cpp@{B\-V\-\_\-\-Open\-G\-L.\-cpp}}
+{\ttfamily \#include \char`\"{}B\-V\-\_\-\-Open\-G\-L.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$Qt\-Open\-G\-L$>$}\\*
+{\ttfamily \#include $<$Q\-Message\-Box$>$}\\*
+{\ttfamily \#include $<$math.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}image.\-h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}gradient.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$typeinfo$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bf Cos}(th)~cos(M\-\_\-\-P\-I/180$\ast$(th))
+\item 
+\#define {\bf Sin}(th)~sin(M\-\_\-\-P\-I/180$\ast$(th))
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const int {\bf plane\-\_\-size} =6
+\begin{DoxyCompactList}\small\item\em Cube Vertexes. \end{DoxyCompactList}\item 
+const float {\bf plane\-\_\-data} [$\,$]
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\index{B\-V\-\_\-\-Open\-G\-L.\-cpp@{B\-V\-\_\-\-Open\-G\-L.\-cpp}!Cos@{Cos}}
+\index{Cos@{Cos}!BV_OpenGL.cpp@{B\-V\-\_\-\-Open\-G\-L.\-cpp}}
+\subsubsection[{Cos}]{\setlength{\rightskip}{0pt plus 5cm}\#define Cos(
+\begin{DoxyParamCaption}
+\item[{}]{th}
+\end{DoxyParamCaption}
+)~cos(M\-\_\-\-P\-I/180$\ast$(th))}\label{_b_v___open_g_l_8cpp_a85c7892e3f419a4d9d22d6dce5b896e4}
+\index{B\-V\-\_\-\-Open\-G\-L.\-cpp@{B\-V\-\_\-\-Open\-G\-L.\-cpp}!Sin@{Sin}}
+\index{Sin@{Sin}!BV_OpenGL.cpp@{B\-V\-\_\-\-Open\-G\-L.\-cpp}}
+\subsubsection[{Sin}]{\setlength{\rightskip}{0pt plus 5cm}\#define Sin(
+\begin{DoxyParamCaption}
+\item[{}]{th}
+\end{DoxyParamCaption}
+)~sin(M\-\_\-\-P\-I/180$\ast$(th))}\label{_b_v___open_g_l_8cpp_aba5e66307c227c460f8ffb891774fdf7}
+
+
+\subsection{Variable Documentation}
+\index{B\-V\-\_\-\-Open\-G\-L.\-cpp@{B\-V\-\_\-\-Open\-G\-L.\-cpp}!plane\-\_\-data@{plane\-\_\-data}}
+\index{plane\-\_\-data@{plane\-\_\-data}!BV_OpenGL.cpp@{B\-V\-\_\-\-Open\-G\-L.\-cpp}}
+\subsubsection[{plane\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}const float plane\-\_\-data[$\,$]}\label{_b_v___open_g_l_8cpp_a84dc7d968c2f5ccbe69ef8a5b4269ceb}
+{\bfseries Initial value\-:}
+\begin{DoxyCode}
+=  
+\{
+
+   
+   +1,+1,0,+1,   0, 0,+1,   1,0,0,  1,1,
+   -1,+1,0,+1,   0, 0,+1,   1,0,0,  0,1,
+   +1,-1,0,+1,   0, 0,+1,   1,0,0,  1,0,
+   -1,+1,0,+1,   0, 0,+1,   1,0,0,  0,1,
+   +1,-1,0,+1,   0, 0,+1,   1,0,0,  1,0,
+   -1,-1,0,+1,   0, 0,+1,   1,0,0,  0,0,
+\}
+\end{DoxyCode}
+\index{B\-V\-\_\-\-Open\-G\-L.\-cpp@{B\-V\-\_\-\-Open\-G\-L.\-cpp}!plane\-\_\-size@{plane\-\_\-size}}
+\index{plane\-\_\-size@{plane\-\_\-size}!BV_OpenGL.cpp@{B\-V\-\_\-\-Open\-G\-L.\-cpp}}
+\subsubsection[{plane\-\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}const int plane\-\_\-size =6}\label{_b_v___open_g_l_8cpp_a9cd3c128c52c21579a10940328869408}
+
+
+Cube Vertexes. 
+

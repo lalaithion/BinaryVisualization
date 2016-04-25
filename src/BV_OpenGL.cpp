@@ -10,7 +10,7 @@
 #define Sin(th) sin(M_PI/180*(th))
 
 //
-//  Constructor with default settings
+///  Constructor with default settings
 //
 BV_OpenGL::BV_OpenGL(QWidget* parent)
     : QGLWidget(parent)
@@ -29,7 +29,7 @@ BV_OpenGL::BV_OpenGL(QWidget* parent)
 }
 
 //
-//  This function sets the vector of gradients to the value passed in
+///  This function sets the vector of gradients to the value passed in
 //
 
 void BV_OpenGL::SetGradients(std::vector<Gradient> grads)
@@ -38,50 +38,50 @@ void BV_OpenGL::SetGradients(std::vector<Gradient> grads)
 }
 
 //
-//  Reset view
+///  Reset view
 //
 void BV_OpenGL::reset()
 {
    th = ph = 0;
    dim = 3;
    Projection();
-   //  Request redisplay
+   ///  Request redisplay
    updateGL();
 }
 
 
 //
-//  Set shader
+/// \brief  Set shader
 //
 void BV_OpenGL::set_dropdown(int sel)
 {
-    // initalize array
+    /// initalize array
     float grad_image[256*3];
-    // load selected gradient
+    /// load selected gradient
     Gradient r = gradls[sel];
-    // get it's texture
+    /// get it's texture
     r.getTexture(grad_image);
-    // loop through it, and set the gradient array to have the right values
+    /// loop through it, and set the gradient array to have the right values
     for (int k = 0; k < 256; k++) {
          gradient[k] = QVector3D(grad_image[k*3], grad_image[k*3+2], grad_image[k*3+1]);
     }
     mode = sel;
-    //  Request redisplay
+    ///  Request redisplay
     updateGL();
 }
 
 //
-//  Set light elevation
+/// \brief  Set light elevation
 //
 void BV_OpenGL::set_slider(int Z)
 {
    z0 = 0.02*Z;
-   //  Request redisplay
+   ///  Request redisplay
    updateGL();
 }
 
 void BV_OpenGL::button_pressed() {
-    // initialize array
+    /// initialize array
     /*
     float image[4*4] = {
         0.5, 0.0, 0.5, 0.0,
@@ -91,9 +91,9 @@ void BV_OpenGL::button_pressed() {
     }; */
     float image[256*256];
     //for(int i = 0; i < 256*256; i++) {image[i] = 0;}
-    // get filename with dialog
+    /// get filename with dialog
     QString filename = QFileDialog::getOpenFileName(0, "Select file");//, QDir::homePath());
-    // get image from Image object using a logarithmic normalization
+    /// get image from Image object using a logarithmic normalization
     Image File(filename.toUtf8().data());
     File.getLogNormalizedBuffer(image);
     //glGenTextures(1, &texture);
@@ -105,7 +105,7 @@ void BV_OpenGL::button_pressed() {
 }
 
 //
-//  Cube Vertexes
+/// \brief  Cube Vertexes
 //
 const int plane_size=6;
 const float plane_data[] =  // Vertex data
@@ -121,7 +121,7 @@ const float plane_data[] =  // Vertex data
 };
 
 //
-//  Initialize
+///  Initialize
 //
 void BV_OpenGL::initializeGL()
 {
@@ -149,61 +149,61 @@ void BV_OpenGL::initializeGL()
    for (int k = 0; k < 256; k++) {
         gradient[k] = QVector3D(grad_image[k*3], grad_image[k*3+2], grad_image[k*3+1]);
    }
-   //  Load shaders
+   ///  Load shaders
    Shader(shader,":/default.vert",":/default.frag");
 
-   //  Start 100 fps timer connected to updateGL
+   ///  Start 100 fps timer connected to updateGL
    move = true;
    timer.setInterval(10);
    connect(&timer,SIGNAL(timeout()),this,SLOT(updateGL()));
    timer.start();
    time.start();
 
-   //  Cube vertex buffer object
-   //  Copy data to vertex buffer object
+   ///  Cube vertex buffer object
+   ///  Copy data to vertex buffer object
    cube_buffer.create();
    cube_buffer.bind();
    cube_buffer.setUsagePattern(QGLBuffer::StaticDraw);
    cube_buffer.allocate(sizeof(plane_data));
    cube_buffer.write(0,plane_data,sizeof(plane_data));
-   //  Unbind this buffer
+   ///  Unbind this buffer
    cube_buffer.release();
 }
 
 //
-//  Set projection when window is resized
+/// \brief  Set projection when window is resized
 //
 void BV_OpenGL::resizeGL(int width, int height)
 {
-   //  Window aspect ration
+   ///  Window aspect ration
    asp = height ? width / (float)height : 1;
-   //  Viewport is whole screen
+   ///  Viewport is whole screen
    glViewport(0,0,width,height);
-   //  Set projection
+   ///  Set projection
    Projection();
 }
 
 //
-//  Draw the window
+///  \brief Draw the window
 //
 void BV_OpenGL::paintGL()
 {
-   //  Wall time (seconds)
+   ///  Wall time (seconds)
    float t = 0.001*time.elapsed();
    if (move) zh = fmod(90*t,360);
 
-   //  Clear screen and Z-buffer
+   ///  Clear screen and Z-buffer
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
    glEnable(GL_DEPTH_TEST);
 
-   //  Set view
+   ///  Set view
    glLoadIdentity();
    if (fov) glTranslated(0,0,-2*dim);
 
    //glRotated(ph,1,0,0);
    //glRotated(th,0,1,0);
 
-   //  Create Modelview matrix
+   ///  Create Modelview matrix
 
    QMatrix4x4 mv;
    if (fov) mv.translate(0,0,-2*dim);
@@ -212,15 +212,15 @@ void BV_OpenGL::paintGL()
    //mv.rotate(th,0,1,0);
 
 
-   // Enable shader
+   /// Enable shader
    shader.bind();
-   //  Set Modelview and Projection Matrix
+   ///  Set Modelview and Projection Matrix
    shader.setUniformValue("ProjectionMatrix",proj);
    shader.setUniformValue("ModelViewMatrix",mv);
    shader.setUniformValue("texture",texture);
    shader.setUniformValueArray("gradient",gradient, 255*3);
 
-   //  Select cube buffer
+   ///  Select cube buffer
    cube_buffer.bind();
    //   Attribute 0: vertex coordinate (vec4) at offset 0
    shader.enableAttributeArray(0);
@@ -231,27 +231,27 @@ void BV_OpenGL::paintGL()
    shader.enableAttributeArray(1);
    shader.setAttributeBuffer(shader.attributeLocation("TextureCoords"),GL_FLOAT,10*sizeof(float),2,12*sizeof(float));
 
-   // Draw the plane
+   /// Draw the plane
    glDrawArrays(GL_TRIANGLES,0,plane_size);
 
-   //  Disable vertex arrays
+   /// Disable vertex arrays
    shader.disableAttributeArray(0);
    shader.disableAttributeArray(1);
 
-   //  Unbind this buffer
+   ///  Unbind this buffer
    cube_buffer.release();
 
-   // Back to fixed pipeline
+   /// Back to fixed pipeline
    shader.release();
    
-   //  Emit angles to display
+   ///  Emit angles to display
    emit label(QString::number(th));
-   //  Emit light angle
+   ///  Emit light angle
    //emit light((int)zh);
 }
 
 //
-//  Throw a fatal error and die
+///  \brief Throw a fatal error and die
 //
 void BV_OpenGL::Fatal(QString message)
 {
@@ -260,11 +260,11 @@ void BV_OpenGL::Fatal(QString message)
 }
 
 //
-//  Set OpenGL projection
+/// \brief  Set OpenGL projection
 //
 void BV_OpenGL::Projection()
 {
-   //  Set fixed pipeline transformation
+   ///  Set fixed pipeline transformation
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
    if (fov)
@@ -279,7 +279,7 @@ void BV_OpenGL::Projection()
       glOrtho(-dim*asp, +dim*asp, -dim, +dim, -dim, +dim);
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
-   //  Set GL4 transformation
+   ///  Set GL4 transformation
    proj.setToIdentity();
    if (fov)
       proj.perspective(fov,asp,dim/4,4*dim);
@@ -339,7 +339,7 @@ void BV_OpenGL::wheelEvent(QWheelEvent* e)
 }
 
 //
-//  Load shader
+/// \briefLoad shader
 //
 void BV_OpenGL::Shader(QGLShaderProgram& shader,QString vert,QString frag)
 {
