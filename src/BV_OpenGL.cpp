@@ -10,7 +10,7 @@
 #define Sin(th) sin(M_PI/180*(th))
 
 //
-//  Constructor
+//  Constructor with default settings
 //
 BV_OpenGL::BV_OpenGL(QWidget* parent)
     : QGLWidget(parent)
@@ -27,6 +27,10 @@ BV_OpenGL::BV_OpenGL(QWidget* parent)
    z0 = 1;
    zh = 0;
 }
+
+//
+//  This function sets the vector of gradients to the value passed in
+//
 
 void BV_OpenGL::SetGradients(std::vector<Gradient> grads)
 {
@@ -51,9 +55,13 @@ void BV_OpenGL::reset()
 //
 void BV_OpenGL::set_dropdown(int sel)
 {
+    // initalize array
     float grad_image[256*3];
+    // load selected gradient
     Gradient r = gradls[sel];
+    // get it's texture
     r.getTexture(grad_image);
+    // loop through it, and set the gradient array to have the right values
     for (int k = 0; k < 256; k++) {
          gradient[k] = QVector3D(grad_image[k*3], grad_image[k*3+2], grad_image[k*3+1]);
     }
@@ -73,13 +81,23 @@ void BV_OpenGL::set_slider(int Z)
 }
 
 void BV_OpenGL::button_pressed() {
+    // initialize array
+    /*
+    float image[4*4] = {
+        0.5, 0.0, 0.5, 0.0,
+        0.0, 0.5, 0.0, 0.5,
+        0.5, 0.0, 0.5, 0.0,
+        0.0, 0.5, 0.0, 0.5,
+    }; */
     float image[256*256];
+    //for(int i = 0; i < 256*256; i++) {image[i] = 0;}
+    // get filename with dialog
     QString filename = QFileDialog::getOpenFileName(0, "Select file");//, QDir::homePath());
+    // get image from Image object using a logarithmic normalization
     Image File(filename.toUtf8().data());
     File.getLogNormalizedBuffer(image);
-
-    //glGenTextures(1,&texture);
-    //  Bind texture (state change - all texture calls now refer to this one specifically)
+    //glGenTextures(1, &texture);
+    //Bind texture (state change - all texture calls now refer to this one specifically)
     glBindTexture(texture,GL_TEXTURE_2D);
     glTexImage2D(GL_TEXTURE_2D,0,1,256,256,0,GL_LUMINANCE,GL_FLOAT,image);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
@@ -110,7 +128,8 @@ void BV_OpenGL::initializeGL()
    if (init) return;
    init = true;
 
-   float image[256*256];
+   //
+   /*float image[256*256];
    QString filename = QFileDialog::getOpenFileName(0, "Select file");//, QDir::homePath());
    Image File(filename.toUtf8().data());
    File.getLogNormalizedBuffer(image);
@@ -121,6 +140,8 @@ void BV_OpenGL::initializeGL()
    glTexImage2D(GL_TEXTURE_2D,0,1,256,256,0,GL_LUMINANCE,GL_FLOAT,image);
    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+*/
+   button_pressed();
 
    float grad_image[256*3];
    Gradient r = gradls[0];

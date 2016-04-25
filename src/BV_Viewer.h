@@ -16,6 +16,7 @@ private:
    BV_OpenGL*               ogl;
    std::vector<Gradient>    gradls;
 private slots:
+   //void                     remake_window();
 public:
     BV_Viewer();
 };

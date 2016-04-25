@@ -19,6 +19,7 @@ typedef struct
 	rgb color;      // rgb struct
 } point;
 
+// These two functions return a string representation of the color
 const char * printcolor(rgb c);
 
 const char * printcolor(hsv c);

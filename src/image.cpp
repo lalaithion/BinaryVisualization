@@ -72,6 +72,7 @@ void Image::getPowNormalizedBuffer(float* normalized, float exponent){
 }
 
 void Image::getLogNormalizedBuffer(float* normalized, float base) {
+    memset(normalized, 0, sizeof(float)*IMAGE_BUFFER_SIZE*IMAGE_BUFFER_SIZE);
     float scale = log(base);
     float max = log((float)getMax())/log(base);
     for(int i = 0; i < IMAGE_BUFFER_SIZE*IMAGE_BUFFER_SIZE; i++)
