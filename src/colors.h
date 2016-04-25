@@ -34,6 +34,6 @@ extern std::string grayscale =
         "0.0->#000000\n"
         "1.0->#FFFFFF\n";
 
-extern std::vector<std::string> colors = {green, rainbow, heatmap, grayscale};
+extern std::vector<std::string> colors = {heatmap, rainbow, green, grayscale};
 
 #endif // COLORS_H
