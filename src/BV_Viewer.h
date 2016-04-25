@@ -11,8 +11,8 @@ class BV_Viewer : public QWidget
 {
 Q_OBJECT
 private:
-   QSlider*                 test_slider;
-   QPushButton*             test_button;
+   QSlider*                 slider;
+   QPushButton*             button;
    BV_OpenGL*               ogl;
    std::vector<Gradient>    gradls;
 private slots:

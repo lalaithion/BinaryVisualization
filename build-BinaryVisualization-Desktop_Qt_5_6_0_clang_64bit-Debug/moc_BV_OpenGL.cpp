@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_BV_OpenGL_t {
     QByteArrayData data[11];
-    char stringdata0[84];
+    char stringdata0[79];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -30,21 +30,20 @@ struct qt_meta_stringdata_BV_OpenGL_t {
 static const qt_meta_stringdata_BV_OpenGL_t qt_meta_stringdata_BV_OpenGL = {
     {
 QT_MOC_LITERAL(0, 0, 9), // "BV_OpenGL"
-QT_MOC_LITERAL(1, 10, 10), // "test_label"
-QT_MOC_LITERAL(2, 21, 0), // ""
-QT_MOC_LITERAL(3, 22, 4), // "text"
-QT_MOC_LITERAL(4, 27, 5), // "light"
-QT_MOC_LITERAL(5, 33, 12), // "set_dropdown"
-QT_MOC_LITERAL(6, 46, 3), // "sel"
-QT_MOC_LITERAL(7, 50, 10), // "set_slider"
-QT_MOC_LITERAL(8, 61, 1), // "z"
-QT_MOC_LITERAL(9, 63, 14), // "button_pressed"
-QT_MOC_LITERAL(10, 78, 5) // "reset"
+QT_MOC_LITERAL(1, 10, 5), // "label"
+QT_MOC_LITERAL(2, 16, 0), // ""
+QT_MOC_LITERAL(3, 17, 4), // "text"
+QT_MOC_LITERAL(4, 22, 5), // "light"
+QT_MOC_LITERAL(5, 28, 12), // "set_dropdown"
+QT_MOC_LITERAL(6, 41, 3), // "sel"
+QT_MOC_LITERAL(7, 45, 10), // "set_slider"
+QT_MOC_LITERAL(8, 56, 1), // "z"
+QT_MOC_LITERAL(9, 58, 14), // "button_pressed"
+QT_MOC_LITERAL(10, 73, 5) // "reset"
 
     },
-    "BV_OpenGL\0test_label\0\0text\0light\0"
-    "set_dropdown\0sel\0set_slider\0z\0"
-    "button_pressed\0reset"
+    "BV_OpenGL\0label\0\0text\0light\0set_dropdown\0"
+    "sel\0set_slider\0z\0button_pressed\0reset"
 };
 #undef QT_MOC_LITERAL
 
@@ -90,7 +89,7 @@ void BV_OpenGL::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         BV_OpenGL *_t = static_cast<BV_OpenGL *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->test_label((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 0: _t->label((*reinterpret_cast< QString(*)>(_a[1]))); break;
         case 1: _t->light((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 2: _t->set_dropdown((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 3: _t->set_slider((*reinterpret_cast< int(*)>(_a[1]))); break;
@@ -103,7 +102,7 @@ void BV_OpenGL::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         void **func = reinterpret_cast<void **>(_a[1]);
         {
             typedef void (BV_OpenGL::*_t)(QString );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&BV_OpenGL::test_label)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&BV_OpenGL::label)) {
                 *result = 0;
                 return;
             }
@@ -155,7 +154,7 @@ int BV_OpenGL::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void BV_OpenGL::test_label(QString _t1)
+void BV_OpenGL::label(QString _t1)
 {
     void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);

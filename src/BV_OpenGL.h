@@ -43,7 +43,7 @@ public slots:
     void button_pressed();            //  Slot to set light movement
     void reset();                          //  Reset view
 signals:
-    void test_label(QString text);             //  Signal for view angles
+    void label(QString text);             //  Signal for view angles
     void light(int);                       //  Light position
 protected:
     void initializeGL();                   //  Initialize widget

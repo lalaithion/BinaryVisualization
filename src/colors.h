@@ -14,14 +14,15 @@ extern std::string heatmap =
         "\"Heatmap\"\n"
         "usehsv\n"
         "0.0->#000001\n"
-        "0.5->#990099\n"
-        "1.0->#FFFF00\n";
+        "0.4->#FF0000\n"
+        "0.8->#FFFF00\n"
+        "1.0->#FFFFFF\n";
 
 extern std::string green =
         "\"Green\"\n"
         "usehsv\n"
         "0.0->#000001\n"
-        "0.5->#00FF00\n";
+        "1.0->#00FF00\n";
 
 extern std::vector<std::string> colors = {green, rainbow, heatmap};
 

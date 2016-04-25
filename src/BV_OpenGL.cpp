@@ -57,7 +57,6 @@ void BV_OpenGL::set_dropdown(int sel)
     for (int k = 0; k < 256; k++) {
          gradient[k] = QVector3D(grad_image[k*3], grad_image[k*3+2], grad_image[k*3+1]);
     }
-    std::cout << r.getName() << std::endl;
     mode = sel;
     //  Request redisplay
     updateGL();
@@ -76,8 +75,8 @@ void BV_OpenGL::set_slider(int Z)
 void BV_OpenGL::button_pressed() {
     float image[256*256];
     QString filename = QFileDialog::getOpenFileName(0, "Select file");//, QDir::homePath());
-    Image testFile(filename.toUtf8().data());
-    testFile.getLogNormalizedBuffer(image);
+    Image File(filename.toUtf8().data());
+    File.getLogNormalizedBuffer(image);
 
     //glGenTextures(1,&texture);
     //  Bind texture (state change - all texture calls now refer to this one specifically)
@@ -113,8 +112,8 @@ void BV_OpenGL::initializeGL()
 
    float image[256*256];
    QString filename = QFileDialog::getOpenFileName(0, "Select file");//, QDir::homePath());
-   Image testFile(filename.toUtf8().data());
-   testFile.getLogNormalizedBuffer(image);
+   Image File(filename.toUtf8().data());
+   File.getLogNormalizedBuffer(image);
 
    glGenTextures(1,&texture);
    //  Bind texture (state change - all texture calls now refer to this one specifically)
@@ -225,7 +224,7 @@ void BV_OpenGL::paintGL()
    shader.release();
    
    //  Emit angles to display
-   emit test_label(QString::number(th));
+   emit label(QString::number(th));
    //  Emit light angle
    //emit light((int)zh);
 }
